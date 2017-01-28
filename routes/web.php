@@ -25,7 +25,7 @@ Route::get('/home', 'HomeController@index');
 Route::get('/webadmin', function()
 {
     return View::make('webadmin/webadmin');
-});
+})->middleware('auth');
 
 
 /*
@@ -40,17 +40,6 @@ Route::get('campamento/destroy/{id}',[
 		'uses' => 'CampamentoController@destroy',
 		'as' => 'campamento.destroy'
 		]);
-/*Route::group(['prefix'=>'campamento'],function(){
-	Route::resource('campamento','EdicionesController');
-	Route::get('ediciones/{id}/destroy',[
-		'uses' => 'EdicionesController@destroy',
-		'as' => 'edicion.ediciones.destroy'
-		]);
-	Route::get('editando',[
-		'uses' => 'EdicionesController@edicionEditando',
-		'as' => 'edicion.ediciones.editando'
-		]);
-});*/
 /*
 * Routes para  Staff...
 */
@@ -78,8 +67,13 @@ Route::get('gracias',function(){
 Route::get('graciasStaff',function(){
     return View::make('public/graciasStaff');
 	});
-
+/*
+* Routes para Viviente...
+*/
 Route::resource('/vivientes','VivienteController');
+/*
+* Routes para encuesta Viviente...
+*/
 Route::post('vivientesEncuestaSend', 'VivienteController@store');
 
 Route::get('encuestaVivientes',function(){

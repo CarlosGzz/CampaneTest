@@ -55,6 +55,38 @@
 			<div id="editarEliminar"></div>
 			@include('campamento/altaCampamento')
 		</div>
+		<br>
+		<div class="row" id="tablaGaias">
+				<div class="col-md-12 col-sm-12 col-xs-12">
+					<div class="x_panel">
+						<div class="x_title">
+							<h2>Tabla de Gaia <small></small></h2>
+							<ul class="nav navbar-right panel_toolbox">
+								<li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+								</li>
+								<li><a class="close-link"><i class="fa fa-close"></i></a>
+								</li>
+							</ul>
+							<div class="clearfix"></div>
+						</div>
+						<div class="x_content">
+							<p class="text-muted font-13 m-b-30">
+							</p>
+							<table id="gaias" class="table table-striped table-bordered">
+								<thead>
+									<tr>
+										<th>id</th>
+										<th>Gaia</th>
+									</tr>
+								</thead>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="editarEliminarGaia"></div>
+			@include('campamento/altaGaia')
+		</div>
 	</div>
 </div>
 @endsection
@@ -156,7 +188,7 @@
     </script>
     <!-- /DATATABLES -->
 
-    <!-- Ajax para desplegar el editor -->
+    <!-- Ajax para desplegar el editor de campamento -->
 	<script type="text/javascript">
 		function showPanelOnTable(obj){
 			$.ajax({

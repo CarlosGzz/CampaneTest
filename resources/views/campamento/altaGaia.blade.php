@@ -3,7 +3,7 @@
 	<div class="panel panel-primary">
 		<div class="panel-heading clearfix">
 			<h2 class="panel-title pull-left" >
-				Alta Campamento
+				Alta Gaia
 			</h2>
 		</div>
 		<div class = "panel-body">
@@ -18,11 +18,11 @@
 				</div>
 			</div>
 			@endif
-			{!! Form::open(['route' => 'campamento.store', 'method' => 'POST']) !!}
+			{!! Form::open(['route' => 'gaia.store', 'method' => 'POST']) !!}
 			<!--Puesto-->
 			<div class="form-group">
-				{!! Form::label('puest','Puesto') !!}*
-				{!! Form::text('puesto','',['class'=>'form-control', 'placeholder' => 'Campamento OT-16', 'required']) !!}
+				{!! Form::label('gaia','Gaia') !!}*
+				{!! Form::text('gaia','',['class'=>'form-control', 'placeholder' => 'Campamento OT-16', 'required']) !!}
 			</div>
 			<!--Boton-->
 			<div class="form-group">

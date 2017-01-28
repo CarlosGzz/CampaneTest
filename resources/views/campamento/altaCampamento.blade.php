@@ -42,7 +42,7 @@
 			<hr>
 			<!--Boton-->
 			<div class="form-group">
-				{!! Form::submit('Crear Edicion',['class'=>'btn btn-primary'])!!}
+				{!! Form::submit('Enviar',['class'=>'btn btn-primary'])!!}
 			</div>
 
 			{!! Form::close() !!}
