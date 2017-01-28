@@ -19,74 +19,107 @@
 			<div class="title_left">
 				<h3> Web Admin Panel <small></small></h3>
 			</div>
-			<!--Datatable Campamentos-->
+		</div>
+	</div>
+	<!--Datatable Campamentos-->
 
-			<div class="row" id="tablaCampamentos">
-				<div class="col-md-12 col-sm-12 col-xs-12">
-					<div class="x_panel">
-						<div class="x_title">
-							<h2>Tabla de Campamentos <small></small></h2>
-							<ul class="nav navbar-right panel_toolbox">
-								<li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-								</li>
-								<li><a class="close-link"><i class="fa fa-close"></i></a>
-								</li>
-							</ul>
-							<div class="clearfix"></div>
-						</div>
-						<div class="x_content">
-							<p class="text-muted font-13 m-b-30">
-							</p>
-							<table id="campamentos" class="table table-striped table-bordered">
-								<thead>
-									<tr>
-										<th>id</th>
-										<th>Nombre</th>
-										<th>Fecha Inicio</th>
-										<th>Fecha Final</th>
-										<th>Actual</th>
-									</tr>
-								</thead>
-							</table>
-						</div>
-					</div>
+	<div class="row" id="tablaCampamentos">
+		<div class="col-md-12 col-sm-12 col-xs-12">
+			<div class="x_panel">
+				<div class="x_title">
+					<h2>Tabla de Campamentos <small></small></h2>
+					<ul class="nav navbar-right panel_toolbox">
+						<li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+						</li>
+						<li><a class="close-link"><i class="fa fa-close"></i></a>
+						</li>
+					</ul>
+					<div class="clearfix"></div>
+				</div>
+				<div class="x_content">
+					<p class="text-muted font-13 m-b-30">
+					</p>
+					<table id="campamentos" class="table table-striped table-bordered">
+						<thead>
+							<tr>
+								<th>id</th>
+								<th>Nombre</th>
+								<th>Fecha Inicio</th>
+								<th>Fecha Final</th>
+								<th>Actual</th>
+							</tr>
+						</thead>
+					</table>
 				</div>
 			</div>
-			<div id="editarEliminar"></div>
-			@include('campamento/altaCampamento')
 		</div>
-		<br>
-		<div class="row" id="tablaGaias">
-				<div class="col-md-12 col-sm-12 col-xs-12">
-					<div class="x_panel">
-						<div class="x_title">
-							<h2>Tabla de Gaia <small></small></h2>
-							<ul class="nav navbar-right panel_toolbox">
-								<li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-								</li>
-								<li><a class="close-link"><i class="fa fa-close"></i></a>
-								</li>
-							</ul>
-							<div class="clearfix"></div>
-						</div>
-						<div class="x_content">
-							<p class="text-muted font-13 m-b-30">
-							</p>
-							<table id="gaias" class="table table-striped table-bordered">
-								<thead>
-									<tr>
-										<th>id</th>
-										<th>Gaia</th>
-									</tr>
-								</thead>
-							</table>
-						</div>
-					</div>
+	</div>
+	<div class="row">
+		<div id="editarEliminarCampamento"></div>
+		@include('campamento/altaCampamento')
+	</div>
+	<br>
+	<div class="row" id="tablaGaias">
+		<!--Gaias Datatable-->
+		<div class="col-md-6 col-sm-6 col-xs-12">
+			<div class="x_panel">
+				<div class="x_title">
+					<h2>Tabla de Gaia <small></small></h2>
+					<ul class="nav navbar-right panel_toolbox">
+						<li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+						</li>
+						<li><a class="close-link"><i class="fa fa-close"></i></a>
+						</li>
+					</ul>
+					<div class="clearfix"></div>
+				</div>
+				<div class="x_content">
+					<p class="text-muted font-13 m-b-30">
+					</p>
+					<table id="gaias" class="table table-striped table-bordered">
+						<thead>
+							<tr>
+								<th>id</th>
+								<th>Gaia</th>
+							</tr>
+						</thead>
+					</table>
 				</div>
 			</div>
-			<div id="editarEliminarGaia"></div>
-			@include('campamento/altaGaia')
 		</div>
+		<!--Gaias Datatable-->
+		<div class="col-md-6 col-sm-6 col-xs-12">
+			<div class="x_panel">
+				<div class="x_title">
+					<h2>Tabla de Puestos <small></small></h2>
+					<ul class="nav navbar-right panel_toolbox">
+						<li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+						</li>
+						<li><a class="close-link"><i class="fa fa-close"></i></a>
+						</li>
+					</ul>
+					<div class="clearfix"></div>
+				</div>
+				<div class="x_content">
+					<p class="text-muted font-13 m-b-30">
+					</p>
+					<table id="puestos" class="table table-striped table-bordered">
+						<thead>
+							<tr>
+								<th>id</th>
+								<th>Puesto</th>
+							</tr>
+						</thead>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		@include('campamento/altaGaia')
+		<div id="editarEliminarGaia"></div>
+		<div id="editarEliminarPuesto"></div>
+		@include('campamento/altaPuesto')
 	</div>
 </div>
 @endsection
@@ -118,6 +151,7 @@
     <script src="/js/datatables/jszip.min.js"></script>
     <script src="/js/datatables/pdfmake.min.js"></script>
     <script src="/js/datatables/vfs_fonts.js"></script>
+    <!-- Campamento -->
     <script>
       $(document).ready(function() {
         var handleDataTableButtons = function() {
@@ -177,32 +211,169 @@
       });
     </script>
     <script type="text/javascript">
-    $(document).ready(function() {
-	    var table = $('#campamentos').DataTable();
+	    $(document).ready(function() {
+		    var table = $('#campamentos').DataTable();
 
-	    $('#campamentos tbody').on('click', 'tr', function () {
-	        var data = table.row( this ).data();
-	        showPanelOnTable(data['id']);
-	    } );
-	} );
+		    $('#campamentos tbody').on('click', 'tr', function () {
+		        var data = table.row( this ).data();
+		        showEditCampamento(data['id']);
+		    } );
+		} );
+    </script>
+    <!-- Gaias -->
+    <script>
+      $(document).ready(function() {
+        var handleDataTableButtons = function() {
+          if ($("#gaias").length) {
+            $("#gaias").DataTable({
+              dom: "Bfrtip",
+              keys: true,
+              ajax: {
+			        url: "{{ url('/gaia') }}",
+			        dataSrc: ''
+			    },
+			  columns: [{ data: 'id' },
+			  			{ data: 'gaia' }],
+              buttons: [
+                {
+                  extend: "copy",
+                  className: "btn-sm"
+                },
+                {
+                  extend: "excel",
+                  className: "btn-sm"
+                },
+                {
+                  extend: "print",
+                  className: "btn-sm"
+                },
+              ],
+              responsive: true,
+            });
+          }
+        };
+
+        TableManageButtons = function() {
+          "use strict";
+          return {
+            init: function() {
+              handleDataTableButtons();
+            }
+          };
+        }();
+
+        TableManageButtons.init();
+      });
+    </script>
+    <script type="text/javascript">
+	    $(document).ready(function() {
+		    var table = $('#gaias').DataTable();
+
+		    $('#gaias tbody').on('click', 'tr', function () {
+		        var data = table.row( this ).data();
+		        showEditGaia(data['id']);
+		    } );
+		} );
+    </script>
+    <!-- Puestos -->
+    <script>
+      $(document).ready(function() {
+        var handleDataTableButtons = function() {
+          if ($("#puestos").length) {
+            $("#puestos").DataTable({
+              dom: "Bfrtip",
+              keys: true,
+              ajax: {
+			        url: "{{ url('/puesto') }}",
+			        dataSrc: ''
+			    },
+			  columns: [{ data: 'id' },
+			  			{ data: 'puesto' }],
+              buttons: [
+                {
+                  extend: "copy",
+                  className: "btn-sm"
+                },
+                {
+                  extend: "print",
+                  className: "btn-sm"
+                },
+              ],
+              responsive: true,
+            });
+          }
+        };
+
+        TableManageButtons = function() {
+          "use strict";
+          return {
+            init: function() {
+              handleDataTableButtons();
+            }
+          };
+        }();
+
+        TableManageButtons.init();
+      });
+    </script>
+    <script type="text/javascript">
+	    $(document).ready(function() {
+		    var table = $('#puestos').DataTable();
+
+		    $('#puestos tbody').on('click', 'tr', function () {
+		        var data = table.row( this ).data();
+		        showEditPuesto(data['id']);
+		    } );
+		} );
     </script>
     <!-- /DATATABLES -->
 
     <!-- Ajax para desplegar el editor de campamento -->
 	<script type="text/javascript">
-		function showPanelOnTable(obj){
+		function showEditCampamento(obj){
 			$.ajax({
 		       url: "{{ url('/campamento/edit') }}"+"/"+obj,
 		       success: function(html) {
-		       		$("#editarEliminar").empty();
-		          	$("#editarEliminar").append(html);
+		       		$("#editarEliminarCampamento").empty();
+		          	$("#editarEliminarCampamento").append(html);
 		          	flatpickr(".flatpickr", {
 					    altInput: true,
 			    		altFormat: "j, F, Y"
 					});
 		       },error: function(){
-		       		$("#editarEliminar").empty();
-		       		$("#editarEliminar").append("No se puede editar este elemento");
+		       		$("#editarEliminarCampamento").empty();
+		       		$("#editarEliminarCampamento").append("No se puede editar este elemento");
+		       }
+		    });
+		}
+	</script>
+	<!-- Ajax para desplegar el editor de gaias -->
+	<script type="text/javascript">
+		function showEditGaia(obj){
+			$.ajax({
+		       url: "{{ url('/gaia/edit') }}"+"/"+obj,
+		       success: function(html) {
+		       		$("#editarEliminarGaia").empty();
+		          	$("#editarEliminarGaia").append(html);
+		       },error: function(){
+		       		$("#editarEliminarGaia").empty();
+		       		$("#editarEliminarGaia").append("No se puede editar este elemento");
+		       }
+		    });
+		}
+	</script>
+
+	<!-- Ajax para desplegar el editor de Puestos -->
+	<script type="text/javascript">
+		function showEditPuesto(obj){
+			$.ajax({
+		       url: "{{ url('/puesto/edit') }}"+"/"+obj,
+		       success: function(html) {
+		       		$("#editarEliminarPuesto").empty();
+		          	$("#editarEliminarPuesto").append(html);
+		       },error: function(){
+		       		$("#editarEliminarPuesto").empty();
+		       		$("#editarEliminarPuesto").append("No se puede editar este elemento");
 		       }
 		    });
 		}
@@ -217,8 +388,14 @@
 		    }
 		}
 
-		function cerrar() {
-			$("#editarEliminar").empty();
+		function cerrarCampamento() {
+			$("#editarEliminarCampamento").empty();
+		}
+		function cerrarGaia() {
+			$("#editarEliminarGaia").empty();
+		}
+		function cerrarPuesto() {
+			$("#editarEliminarPuesto").empty();
 		}
 	</script>
 @stop

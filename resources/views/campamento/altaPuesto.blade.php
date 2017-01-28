@@ -1,9 +1,9 @@
-<!-- Alta Campamento Form-->
+<!-- Alta Puesto Form-->
 <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
 	<div class="panel panel-primary">
 		<div class="panel-heading clearfix">
 			<h2 class="panel-title pull-left" >
-				Alta Campamento
+				Alta Puesto
 			</h2>
 		</div>
 		<div class = "panel-body">
@@ -18,11 +18,11 @@
 				</div>
 			</div>
 			@endif
-			{!! Form::open(['route' => 'campamento.store', 'method' => 'POST']) !!}
+			{!! Form::open(['route' => 'puesto.store', 'method' => 'POST']) !!}
 			<!--Puesto-->
 			<div class="form-group">
-				{!! Form::label('puest','Puesto') !!}*
-				{!! Form::text('puesto','',['class'=>'form-control', 'placeholder' => 'Campamento OT-16', 'required']) !!}
+				{!! Form::label('puesto','Puesto') !!}*
+				{!! Form::text('puesto','',['class'=>'form-control', 'placeholder' => 'Puesto', 'required']) !!}
 			</div>
 			<!--Boton-->
 			<div class="form-group">

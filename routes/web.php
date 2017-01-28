@@ -40,6 +40,32 @@ Route::get('campamento/destroy/{id}',[
 		'uses' => 'CampamentoController@destroy',
 		'as' => 'campamento.destroy'
 		]);
+
+/*
+* Routes para GaiaController...
+*/
+Route::resource('/gaia','GaiaController');
+Route::get('gaia/edit/{id}',[
+		'uses' => 'GaiaController@edit',
+		'as' => 'gaia.edit'
+		]);
+Route::get('gaia/destroy/{id}',[
+		'uses' => 'GaiaController@destroy',
+		'as' => 'gaia.destroy'
+		]);
+
+/*
+* Routes para PuestoController...
+*/
+Route::resource('/puesto','PuestoController');
+Route::get('puesto/edit/{id}',[
+		'uses' => 'PuestoController@edit',
+		'as' => 'puesto.edit'
+		]);
+Route::get('puesto/destroy/{id}',[
+		'uses' => 'PuestoController@destroy',
+		'as' => 'puesto.destroy'
+		]);
 /*
 * Routes para  Staff...
 */

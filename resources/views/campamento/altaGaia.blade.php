@@ -22,7 +22,7 @@
 			<!--Puesto-->
 			<div class="form-group">
 				{!! Form::label('gaia','Gaia') !!}*
-				{!! Form::text('gaia','',['class'=>'form-control', 'placeholder' => 'Campamento OT-16', 'required']) !!}
+				{!! Form::text('gaia','',['class'=>'form-control', 'placeholder' => 'Gaia', 'required']) !!}
 			</div>
 			<!--Boton-->
 			<div class="form-group">

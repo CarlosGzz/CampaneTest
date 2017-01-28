@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Gaia;
+
 class GaiaController extends Controller
 {
     /**
@@ -13,7 +15,8 @@ class GaiaController extends Controller
      */
     public function index()
     {
-        //
+        $gaias = Gaia::all();
+        return $gaias->toJson();
     }
 
     /**
@@ -34,7 +37,11 @@ class GaiaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $gaia = new Gaia($request->all());
+        $gaia->save();
+
+        flash($gaia->gaia.' creado exitosamente','success');
+        return redirect('/webadmin');
     }
 
     /**
@@ -56,7 +63,8 @@ class GaiaController extends Controller
      */
     public function edit($id)
     {
-        //
+        $gaia = Gaia::find($id);
+        return view('campamento/editGaia')->with('gaia', $gaia);
     }
 
     /**
@@ -68,7 +76,12 @@ class GaiaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $gaia = Gaia::find($id);
+        $gaia->gaia = $request->gaia;
+
+        $gaia->save();
+        flash($gaia->gaia.' modificado exitosamente','success');
+        return redirect('/webadmin');
     }
 
     /**
@@ -79,6 +92,14 @@ class GaiaController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $gaia = Gaia::find($id);
+        $gaia->delete();
+        if($gaia->delete()){
+            flash($gaia->gaia.' eliminado exitosamente','success');
+            return redirect('/webadmin');
+        }else{
+            flash($gaia->gaia.' error al eliminar','success');
+            return redirect('/webadmin');
+        }
     }
 }

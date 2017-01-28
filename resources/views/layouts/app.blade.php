@@ -7,7 +7,7 @@
             @include('layouts.menu')
             <div class="right_col " role="main">
                 @yield('content')
-               
+                @include('includes.footer')
             
             </div>
         </div>

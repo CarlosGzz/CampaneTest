@@ -1,6 +1,4 @@
-
-
-<!-- Alta Campamento Form-->
+<!-- Edit Campamento Form-->
 <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
 	<div class="panel panel-warning">
 		<div class="panel-heading clearfix">
@@ -12,7 +10,7 @@
 		        		<span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Eliminar
 		        	</a>
 
-					<a id="cerrar" onclick="cerrar()" class="btn btn-danger btn-sm">
+					<a id="cerrar" onclick="cerrarCampamento()" class="btn btn-danger btn-sm">
 						<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
 						Cerrar
 					</a>

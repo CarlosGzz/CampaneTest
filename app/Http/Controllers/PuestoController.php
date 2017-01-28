@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Puesto;
+
 class PuestoController extends Controller
 {
     /**
@@ -13,7 +15,8 @@ class PuestoController extends Controller
      */
     public function index()
     {
-        //
+        $puestos = Puesto::all();
+        return $puestos->toJson();
     }
 
     /**
@@ -34,7 +37,11 @@ class PuestoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $puesto = new Puesto($request->all());
+        $puesto->save();
+
+        flash($puesto->puesto.' creado exitosamente','success');
+        return redirect('/webadmin');
     }
 
     /**
@@ -56,7 +63,8 @@ class PuestoController extends Controller
      */
     public function edit($id)
     {
-        //
+        $puesto = Puesto::find($id);
+        return view('campamento/editPuesto')->with('puesto', $puesto);
     }
 
     /**
@@ -68,7 +76,12 @@ class PuestoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $puesto = Puesto::find($id);
+        $puesto->puesto = $request->puesto;
+
+        $puesto->save();
+        flash($puesto->puesto.' modificado exitosamente','success');
+        return redirect('/webadmin');
     }
 
     /**
@@ -79,6 +92,14 @@ class PuestoController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $puesto = Puesto::find($id);
+        $puesto->delete();
+        if($puesto->delete()){
+            flash($puesto->puesto.' eliminado exitosamente','success');
+            return redirect('/webadmin');
+        }else{
+            flash($puesto->puesto.' error al eliminar','success');
+            return redirect('/webadmin');
+        }
     }
 }
