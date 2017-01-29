@@ -26,11 +26,6 @@ class CreateVehiculosTable extends Migration
             $table->timestamps();
         });
 
-        // Llamada a egresos para establecer relacion con Viviente
-        Schema::table('campamento_staff', function(Blueprint $table){
-            // Foreign keyes
-            $table->foreign('vehiculo_id')->references('id')->on('vehiculos')->onUpdate('cascade')->onDelete('cascade');
-        });
     }
 
     /**
