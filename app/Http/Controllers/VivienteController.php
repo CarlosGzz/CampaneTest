@@ -9,6 +9,7 @@ use App\Encuesta;
 use App\Familiar;
 
 use App\Http\Traits\CampamentoTrait;
+use Carbon\Carbon;
 
 class VivienteController extends Controller
 {
@@ -30,22 +31,12 @@ class VivienteController extends Controller
      */
     public function index()
     {
-        $vivientes = Viviente::all();
+        $vivientes = $this->vivientesEnCampamentoRegistrados();
 
-        return $vivientes->toJson();
+        return view('vivientes.vivientesDashboard')->with('vivientes', $vivientes);
+
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function vivientesEnCampamento()
-    {
-        $vivientes = Viviente::all();
-
-        return $vivientes->toJson();
-    }
 
     /**
      * Show the form for creating a new resource.
@@ -79,11 +70,11 @@ class VivienteController extends Controller
         $viviente->restriccionesAlimentarias = $request->restriccionesAlimentarias;
         $viviente->alergias = $request->alergias;
         $viviente->medioCampamento = $request->medioCampamento;
-        if(!empty($request->staff)){
+        if($request->staff == 'Otro'){
+            
+            $viviente->otro = $request->otroStaff;
+        }else{
             $viviente->staff_id = $request->staff;
-        }
-        if(!empty($request->otroStaff)){
-            $viviente->otroStaff = $request->otroStaff;
         }
         $viviente->campamento_id = $this->campamentoId;
         $saved = $viviente->save();
@@ -221,7 +212,8 @@ class VivienteController extends Controller
      */
     public function edit($id)
     {
-        //
+         $viviente = Viviente::find($id);
+        return view('vivientes/editViviente')->with('viviente', $viviente);
     }
 
     /**
@@ -244,6 +236,229 @@ class VivienteController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $viviente = Viviente::find($id);
+        if($viviente->delete()){
+            flash($viviente->nombre.' eliminado exitosamente','success');
+            return redirect('/webadmin');
+        }else{
+            flash($viviente->nombre.' error al eliminar','success');
+            return redirect('/webadmin');
+        }
     }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function vivientesEnCampamentoRegistrados()
+    {
+        $vivientes = Viviente::where('campamento_id',$this->campamentoId)->where('pagado',null)->get();
+        //dd($vivientes);
+        $vivientesArray = array();
+        $vivienteArray = array();
+        foreach ($vivientes as $viviente) {
+            $vivienteArray['id'] = $viviente->id;
+            $vivienteArray['genero'] = $viviente->genero;
+            $vivienteArray['nombre'] = $viviente->nombre;
+            $vivienteArray['apellido'] = $viviente->apellidoPaterno." ".$viviente->apellidoMaterno;
+            $edad = Carbon::parse($viviente->fechaNacimiento);
+            $vivienteArray['edad'] = $edad->age;
+            $vivienteArray['telefono'] = $viviente->telefonoCasa;
+            $vivienteArray['celular'] = $viviente->telefonoCel;
+            $vivienteArray['correo'] = $viviente->correo;
+            $vivienteArray['observaciones'] = $viviente->observaciones;
+            $vivienteArray['restricciones'] = $viviente->restriccionesAlimentarias;
+            $vivienteArray['alergias'] = $viviente->alergias;
+            $vivienteArray['medio'] = $viviente->medioCampamento;
+            if(!empty($viviente->otro)){
+                $vivienteArray['staff'] = $viviente->otro;
+            }else{
+                $vivienteArray['staff'] = $viviente->staff->nombre." ".$viviente->staff->apellidoPaterno;
+            }
+            array_push($vivientesArray, $vivienteArray);
+        }
+        return json_encode($vivientesArray); 
+    }
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function vivientesEnCampamentoPagadosParciales()
+    {
+        $vivientes = Viviente::where('campamento_id',$this->campamentoId)->whereBetween('pagado', [1, 849])->get();
+        //dd($vivientes);
+        $vivientesArray = array();
+        $vivienteArray = array();
+        foreach ($vivientes as $viviente) {
+            $vivienteArray['id'] = $viviente->id;
+            $vivienteArray['genero'] = $viviente->genero;
+            $vivienteArray['nombre'] = $viviente->nombre;
+            $vivienteArray['apellido'] = $viviente->apellidoPaterno." ".$viviente->apellidoMaterno;
+            $edad = Carbon::parse($viviente->fechaNacimiento);
+            $vivienteArray['edad'] = $edad->age;
+            $vivienteArray['telefono'] = $viviente->telefonoCasa;
+            $vivienteArray['celular'] = $viviente->telefonoCel;
+            $vivienteArray['correo'] = $viviente->correo;
+            if($viviente->gaia){
+                $vivienteArray['gaia'] = $viviente->gaia->gaia;
+            }else{
+                $vivienteArray['gaia'] = 'no asignado';
+            }
+            $vivienteArray['pagado'] = $viviente->pagado;
+            $vivienteArray['observaciones'] = $viviente->observaciones;
+            $vivienteArray['restricciones'] = $viviente->restriccionesAlimentarias;
+            $vivienteArray['alergias'] = $viviente->alergias;
+            $vivienteArray['medio'] = $viviente->medioCampamento;
+            if(!empty($viviente->otro)){
+                $vivienteArray['staff'] = $viviente->otro;
+            }else{
+                $vivienteArray['staff'] = $viviente->staff->nombre." ".$viviente->staff->apellidoPaterno;
+            }
+            array_push($vivientesArray, $vivienteArray);
+        }
+        return json_encode($vivientesArray); 
+    }
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function vivientesEnCampamentoPagadosTotales()
+    {
+        $vivientes = Viviente::where('campamento_id',$this->campamentoId)->where('pagado', 850)->get();
+        $vivientesArray = array();
+        $vivienteArray = array();
+        foreach ($vivientes as $viviente) {
+            $vivienteArray['id'] = $viviente->id;
+            $vivienteArray['genero'] = $viviente->genero;
+            $vivienteArray['nombre'] = $viviente->nombre;
+            $vivienteArray['apellido'] = $viviente->apellidoPaterno." ".$viviente->apellidoMaterno;
+            $edad = Carbon::parse($viviente->fechaNacimiento);
+            $vivienteArray['edad'] = $edad->age;
+            $vivienteArray['telefono'] = $viviente->telefonoCasa;
+            $vivienteArray['celular'] = $viviente->telefonoCel;
+            $vivienteArray['correo'] = $viviente->correo;
+            if($viviente->gaia){
+                $vivienteArray['gaia'] = $viviente->gaia->gaia;
+            }else{
+                $vivienteArray['gaia'] = 'no asignado';
+            }
+            $vivienteArray['pagado'] = $viviente->pagado;
+            $vivienteArray['observaciones'] = $viviente->observaciones;
+            $vivienteArray['restricciones'] = $viviente->restriccionesAlimentarias;
+            $vivienteArray['alergias'] = $viviente->alergias;
+            $vivienteArray['medio'] = $viviente->medioCampamento;
+            if(!empty($viviente->otro)){
+                $vivienteArray['staff'] = $viviente->otro;
+            }else{
+                $vivienteArray['staff'] = $viviente->staff->nombre." ".$viviente->staff->apellidoPaterno;
+            }
+            array_push($vivientesArray, $vivienteArray);
+        }
+        return json_encode($vivientesArray); 
+    }
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function vivientesRegistradosContador()
+    {
+        $vivientes = Viviente::where('campamento_id',$this->campamentoId)->count();
+        return $vivientes;
+    }
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function vivientesPagadosContador()
+    {
+        $vivientes = Viviente::where('campamento_id',$this->campamentoId)->where('pagado',850)->count();
+        return $vivientes;
+    }
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function vivientesPagadosParcialesContador()
+    {
+        $vivientes = Viviente::where('campamento_id',$this->campamentoId)->whereBetween('pagado', [1, 849])->count();
+        return $vivientes;
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function edadesChartData()
+    {
+        $vivientes = Viviente::where('campamento_id',$this->campamentoId)->get();
+        $edadesArray = array();
+        $edadesArray['sinEdad']=0;
+        $edadesArray['intervalo1']=0;
+        $edadesArray['intervalo2']=0;
+        $edadesArray['intervalo3']=0;
+        $edadesArray['intervalo4']=0;
+        $edadesArray['intervalo5']=0;
+        $edadesArray['mayores']=0;
+
+        foreach ($vivientes as $viviente) {
+            $edad = Carbon::parse($viviente->fechaNacimiento);
+            if($edad->age < 18){
+                if($edad->age==0){
+                    $edadesArray['sinEdad']++;
+                }else{
+                    $edadesArray['intervalo1']++;
+                }
+
+            }
+            if($edad->age == 18 || $edad->age == 19){
+                $edadesArray['intervalo2']++;
+            }
+            if($edad->age == 20 || $edad->age == 21){
+                $edadesArray['intervalo3']++;
+            }
+            if($edad->age == 22 || $edad->age == 23){
+                $edadesArray['intervalo4']++;
+            }
+            if($edad->age == 24 || $edad->age == 25){
+                $edadesArray['intervalo5']++;
+            }
+            if($edad->age > 25){
+                $edadesArray['mayores']++;
+            }
+        }
+        return json_encode($edadesArray);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function generoChartData()
+    {
+        $vivientes = Viviente::where('campamento_id',$this->campamentoId)->get();
+        $generoArray = array();
+        $generoArray['hombres'] = 0;
+        $generoArray['mujeres'] = 0;
+        foreach ($vivientes as $viviente) {
+            if($viviente->genero == 'M'){
+                $generoArray['hombres']++;
+            }
+            if($viviente->genero == 'F'){
+                $generoArray['mujeres']++;
+            }
+        }
+        return json_encode($generoArray);
+    }
+
+
+
+
 }

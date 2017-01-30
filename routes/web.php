@@ -27,6 +27,61 @@ Route::get('/webadmin', function()
     return View::make('webadmin/webadmin');
 })->middleware('auth');
 
+/*
+* Routes para Vivientes...
+*/
+Route::group(['prefix'=>'vivientes'],function(){
+    Route::get('vivientes', function(){
+	    return View::make('vivientes/vivientesDashboard');
+	})->middleware('auth');
+
+	// Routes for Datatables
+	Route::get('vivientesRegistrados',[
+		'uses' => 'VivienteController@vivientesEnCampamentoRegistrados',
+		'as' => 'vivientes.registrados'
+	]);
+	Route::get('vivientesParciales',[
+		'uses' => 'VivienteController@vivientesEnCampamentoPagadosParciales',
+		'as' => 'vivientes.registradosParciales'
+	]);
+	Route::get('vivientesPagados',[
+		'uses' => 'VivienteController@vivientesEnCampamentoPagados',
+		'as' => 'vivientes.registradosPagados'
+	]);
+	// Routes for Vivientes Tiles 
+	Route::get('vivientesContador',[
+		'uses' => 'VivienteController@vivientesRegistradosContador',
+		'as' => 'vivientes.registradosContador'
+	]);
+	Route::get('vivientesContadorPagados',[
+		'uses' => 'VivienteController@vivientesPagadosContador',
+		'as' => 'vivientes.pagadosContador'
+	]);
+	Route::get('vivientesContadorPagadosParciales',[
+		'uses' => 'VivienteController@vivientesPagadosParcialesContador',
+		'as' => 'vivientes.pagadosParcialesContador'
+	]);
+
+	// Routes for Vivientes Charts 
+	Route::get('vivientesEdades',[
+		'uses' => 'VivienteController@edadesChartData',
+		'as' => 'vivientes.edadesChartData'
+	]);
+	Route::get('vivientesGenero',[
+		'uses' => 'VivienteController@generoChartData',
+		'as' => 'vivientes.generoChartData'
+	]);
+
+	Route::get('edit/{id}',[
+		'uses' => 'VivienteController@edit',
+		'as' => 'vivientes.edit'
+		]);
+	Route::get('destroy/{id}',[
+		'uses' => 'VivienteController@destroy',
+		'as' => 'vivientes.destroy'
+		]);
+
+});
 
 /*
 * Routes para CampamentoController...
@@ -93,6 +148,53 @@ Route::get('gracias',function(){
 Route::get('graciasStaff',function(){
     return View::make('public/graciasStaff');
 	});
+Route::get('staffDashboard',function(){
+     	return View::make('public/staffHome');
+	});
+Route::post('staffDashboard',[
+		'uses' => 'StaffController@dashboard',
+		'as' => 'staff.dashboard',
+		]);
+
+/*
+* Routes para Vivientes...
+*/
+Route::group(['prefix'=>'stafers'],function(){
+    Route::get('staff', function(){
+	    return View::make('staff/staffDashboard');
+	})->middleware('auth');
+
+	// Routes for Datatables
+	Route::get('staffRegistrados',[
+		'uses' => 'StaffController@staffRegistrados',
+		'as' => 'staff.registrados'
+	]);
+	Route::get('staffPagados',[
+		'uses' => 'StaffController@staffPagados',
+		'as' => 'staff.registradosPagados'
+	]);
+	
+	// Routes for Staff Tiles 
+	Route::get('staffContador',[
+		'uses' => 'StaffController@staffRegistradosContador',
+		'as' => 'staff.registradosContador'
+	]);
+	Route::get('staffContadorPagados',[
+		'uses' => 'StaffController@staffPagadosContador',
+		'as' => 'staff.pagadosContador'
+	]);
+	Route::get('staffContadorAsistentes',[
+		'uses' => 'StaffController@staffAsistentesContador',
+		'as' => 'staff.asistentesContador'
+	]);
+
+	// Routes for Staff Charts 
+	Route::get('staffViejosNuevos',[
+		'uses' => 'StaffController@staffViejosNuevosContador',
+		'as' => 'staff.viejosNuevos'
+	]);
+
+});
 /*
 * Routes para Viviente...
 */
@@ -105,3 +207,4 @@ Route::post('vivientesEncuestaSend', 'VivienteController@store');
 Route::get('encuestaVivientes',function(){
     return View::make('public/encuestaVivientes');
 	});
+

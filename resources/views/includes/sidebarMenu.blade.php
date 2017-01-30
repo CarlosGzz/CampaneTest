@@ -52,7 +52,7 @@
                         </a>
                         <ul class="nav child_menu" style="display: none">
                             <li>
-                                <a href="{{ url('/vivientes/vivientes') }}">Vivientes</a>
+                                <a href="{{ url('/vivientes') }}">Vivientes</a>
                             </li>
                             <li>
                                 <a href="{{ url('/vivientes/familiares') }}">Familiares</a>

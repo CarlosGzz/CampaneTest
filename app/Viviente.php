@@ -54,7 +54,7 @@ class Viviente extends Model
      */
     public function gaia()
     {
-        return $this->belongsToMany('App\Gaia');
+        return $this->belongsTo('App\Gaia');
     }
 
     /**

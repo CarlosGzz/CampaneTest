@@ -12,6 +12,8 @@ use App\Http\Traits\CampamentoTrait;
 
 use DB;
 
+use Carbon\Carbon;
+
 
 class StaffController extends Controller
 {
@@ -152,7 +154,15 @@ class StaffController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $staff = Staff::find($id);
+        $staff->delete();
+        if($staff->delete()){
+            flash($staff->nombre.' eliminado exitosamente','success');
+            return redirect('/webadmin');
+        }else{
+            flash($staff->nombre.' error al eliminar','success');
+            return redirect('/webadmin');
+        }
     }
 
     /**
@@ -161,19 +171,192 @@ class StaffController extends Controller
      * @param  void
      * @return \Illuminate\Http\Response
      */
-    public function staffPagados($id)
+    public function dashboard(Request $request)
     {
-        $staff;
+        if($request->pass == 'campane17'){
+            return view('public/staffDashboard');
+        }else{
+            return view('public/staffHome');
+        }
     }
 
-    // FUNCIONES A HACER 
-    /* staff pagados
-            <?php 
-                $data = $db->query("SELECT COUNT(s.idStaff) as totalStaffPagados FROM staff as s INNER JOIN staffCampamento as c ON s.idStaff = c.idStaff WHERE c.pagado>0");
-                $totalStaffPagados=mysqli_fetch_assoc($data);
-                echo $totalStaffPagados['totalStaffPagados'];
-            ?> 
-       staff asistentes a campamento
-       staff registrados totales
-    */ 
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function staffPagadosContador()
+    {
+        $staff = Staff::all();
+        $staffCampaPagados = 0;
+        foreach ($staff as $staf) {
+            if($staf->campamento){
+                foreach ($staf->campamento as $campa) {
+                    if($campa->id == $this->campamentoId){
+                        if(!empty($staf->pagado)){
+                            $staffCampaPagados++;
+                        }
+                    }
+                }
+            }
+        }
+        return $staffCampaPagados;
+    }
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function staffAsistentesContador()
+    {
+        $staff = Staff::all();
+        $staffCampa = 0;
+        foreach ($staff as $staf) {
+            if($staf->campamento){
+                foreach ($staf->campamento as $campa) {
+                    if($campa->id == $this->campamentoId){
+                        $staffCampa++;
+                    }
+                }
+            }
+        }
+        return $staffCampa;
+    }
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function staffRegistradosContador()
+    {
+        $staff = Staff::all()->count();
+        return $staff;
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function staffViejosNuevosContador()
+    {
+        $staff = Staff::all();
+        $viejosNuevos['viejos'] = 0;
+        $viejosNuevos['nuevos'] = 0;
+        foreach ($staff as $staf) {
+            if($staf->pulsera == 'roja'){
+                $viejosNuevos['viejos']++;
+            }
+            if($staf->pulsera == 'plateada'){
+                $viejosNuevos['viejos']++;
+            }
+        }
+        $viejosNuevos['nuevos'] = $staff->count() - $viejosNuevos['viejos'];
+        return $viejosNuevos;
+    }
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function staffRegistrados()
+    {
+        $staff = Staff::all();
+        //dd($vivientes);
+        $staffsArray = array();
+        $staffArray = array();
+        foreach ($staff as $staf) {
+            $staffArray['id'] = $staf->id;
+            $staffArray['nombre'] = $staf->nombre;
+            $staffArray['apellido'] = $staf->apellidoPaterno." ".$staf->apellidoMaterno;
+            $staffArray['genero'] = $staf->genero;
+            $edad = Carbon::parse($staf->fechaNacimiento);
+            $staffArray['edad'] = $edad->age;
+            $staffArray['correo'] = $staf->correo;
+            $staffArray['celular'] = $staf->telefonoCel;
+            $staffArray['gaia'] = $staf->gaia->gaia;
+            $staffArray['rolDeseado'] = $staf->rolDeseado;
+            $staffArray['pulsera'] = $staf->pulsera;
+            $staffArray['carrera'] = $staf->carrera;
+            $staffArray['universidad'] = $staf->universidad;
+            $staffArray['estudianteGraduado'] = $staf->estudianteGraduado;
+            array_push($staffsArray, $staffArray);
+        }
+        return json_encode($staffsArray); 
+    }
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function staffPagados()
+    {
+        $staff = Staff::all();
+        //dd($vivientes);
+        $staffsArray = array();
+        $staffArray = array();
+        foreach ($staff as $staf) {
+            if($staf->campamento){
+                foreach ($staf->campamento as $campa) {
+                    if($campa->id == $this->campamentoId){
+                        if(!empty($staf->pagado)){
+                            $staffArray['id'] = $staf->id;
+                            $staffArray['nombre'] = $staf->nombre;
+                            $staffArray['apellido'] = $staf->apellidoPaterno." ".$staf->apellidoMaterno;
+                            $staffArray['genero'] = $staf->genero;
+                            $edad = Carbon::parse($staf->fechaNacimiento);
+                            $staffArray['edad'] = $edad->age;
+                            $staffArray['correo'] = $staf->correo;
+                            $staffArray['celular'] = $staf->telefonoCel;
+                            $staffArray['gaia'] = $staf->gaia->gaia;
+                            $staffArray['rolDeseado'] = $staf->rolDeseado;
+                            $staffArray['pulsera'] = $staf->pulsera;
+                            $staffArray['carrera'] = $staf->carrera;
+                            $staffArray['universidad'] = $staf->universidad;
+                            $staffArray['estudianteGraduado'] = $staf->estudianteGraduado;
+                            array_push($staffsArray, $staffArray);
+                        }
+                    }
+                }
+            }
+        }
+        return json_encode($staffsArray);
+    }
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function staffAsistentes()
+    {
+        $staff = Staff::all();
+        //dd($vivientes);
+        $staffsArray = array();
+        $staffArray = array();
+        foreach ($staff as $staf) {
+            if($staf->campamento){
+                foreach ($staf->campamento as $campa) {
+                    if($campa->id == $this->campamentoId){
+                        $staffArray['id'] = $staf->id;
+                        $staffArray['nombre'] = $staf->nombre;
+                        $staffArray['apellido'] = $staf->apellidoPaterno." ".$staf->apellidoMaterno;
+                        $staffArray['genero'] = $staf->genero;
+                        $edad = Carbon::parse($staf->fechaNacimiento);
+                        $staffArray['edad'] = $edad->age;
+                        $staffArray['correo'] = $staf->correo;
+                        $staffArray['celular'] = $staf->telefonoCel;
+                        $staffArray['gaia'] = $staf->gaia->gaia;
+                        $staffArray['rolDeseado'] = $staf->rolDeseado;
+                        $staffArray['pulsera'] = $staf->pulsera;
+                        $staffArray['carrera'] = $staf->carrera;
+                        $staffArray['universidad'] = $staf->universidad;
+                        $staffArray['estudianteGraduado'] = $staf->estudianteGraduado;
+                        array_push($staffsArray, $staffArray);
+                    }
+                }
+            }
+        }
+        return json_encode($staffsArray);
+    }
+
 }
