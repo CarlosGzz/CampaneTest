@@ -38,7 +38,7 @@
             <div lass="col-md-8 col-sm-8 col-xs-10 col-md-offset-2 col-sm-offset-2 col-xs-offset-1">
                 <div class="page-title">
                     <h3 style="color: white; text-align: center;">
-                        Formulario Saff Campamento Nueva Especie
+                        Formulario Staff Campamento Nueva Especie
                     </h3>
                 </div>
             </div>
