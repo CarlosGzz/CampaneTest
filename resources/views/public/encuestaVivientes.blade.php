@@ -537,12 +537,12 @@
                                         <select id="staff" name="staff" class="form-control"  disabled>
                                             <script type="text/javascript">
                                             $( document ).ready(function() {
-                                                $.get("{{ url('staff')}}", 
+                                                $.get("{{ route('staff.dropdown')}}", 
                                                     function(data) {
                                                         var model = $('#staff');
                                                         var staff = jQuery.parseJSON(data);
                                                         $.each(staff, function(index, element) {
-                                                            model.append("<option value='"+ element.id +"'>" + element.nombre +" "+ element.apellidoPaterno+" "+element.apellidoMaterno + "</option>");
+                                                            model.append("<option value='"+ element.id +"'>" + element.nombre + "</option>");
                                                             });
                                                         });
                                                 });
@@ -1838,7 +1838,6 @@
                                 <br>
                                 <br>
                             </div>
-                            {!! Form::submit('Crear Edicion',['class'=>'btn btn-primary'])!!}
                             {!! Form::close() !!}
                         </div>
                     </div>

@@ -335,7 +335,7 @@
 	<!-- Borrar-->
 	<script>
 		function borrar(obj) {
-		    var r = confirm('Confirmar eliminacion de campamento');
+		    var r = confirm('Confirmar eliminacion de viviente');
 		    if (r == true) {
 		        window.location = $('#'+obj.id).data('route')
 		    }

@@ -239,10 +239,10 @@ class VivienteController extends Controller
         $viviente = Viviente::find($id);
         if($viviente->delete()){
             flash($viviente->nombre.' eliminado exitosamente','success');
-            return redirect('/webadmin');
+            return redirect('/vivientes');
         }else{
             flash($viviente->nombre.' error al eliminar','success');
-            return redirect('/webadmin');
+            return redirect('/vivientes');
         }
     }
 

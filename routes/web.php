@@ -71,15 +71,6 @@ Route::group(['prefix'=>'vivientes'],function(){
 		'as' => 'vivientes.generoChartData'
 	]);
 
-	Route::get('edit/{id}',[
-		'uses' => 'VivienteController@edit',
-		'as' => 'vivientes.edit'
-		]);
-	Route::get('destroy/{id}',[
-		'uses' => 'VivienteController@destroy',
-		'as' => 'vivientes.destroy'
-		]);
-
 });
 
 /*
@@ -212,11 +203,25 @@ Route::group(['prefix'=>'stafers'],function(){
 		'as' => 'staff.edit2'
 	]);
 
+	// Routes for Staff Charts 
+	Route::get('dropdown',[
+		'uses' => 'StaffController@dropdown',
+		'as' => 'staff.dropdown'
+	]);
+
 });
 /*
 * Routes para Viviente...
 */
 Route::resource('/vivientes','VivienteController');
+Route::get('vivientes/edit/{id}',[
+		'uses' => 'VivienteController@edit',
+		'as' => 'vivientes.edit'
+		]);
+	Route::get('vivientes/destroy/{id}',[
+		'uses' => 'VivienteController@destroy',
+		'as' => 'vivientes.destroy'
+		]);
 /*
 * Routes para encuesta Viviente...
 */

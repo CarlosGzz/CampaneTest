@@ -420,4 +420,23 @@ class StaffController extends Controller
         return json_encode($staffsArray);
     }
 
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function dropdown()
+    {
+        $staff = Staff::all();
+        //dd($vivientes);
+        $staffsArray = array();
+        $staffArray = array();
+        foreach ($staff as $staf) {
+            $staffArray['id'] = $staf->id;
+            $staffArray['nombre'] = $staf->nombre." ".$staf->apellidoPaterno." ".$staf->apellidoMaterno;
+            array_push($staffsArray, $staffArray);
+        }
+        return json_encode($staffsArray);
+    }
+
 }
