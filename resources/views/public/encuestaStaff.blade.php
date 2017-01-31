@@ -54,14 +54,20 @@
                     <div class="x_content" id="contenido">
                         <br>
                         {!! Form::open(['route' => 'staff.store', 'method' => 'POST', 'class'=>'form-horizontal form-label-left', 'id'=>'staffForm','data-parsley-validate']) !!}
+                            <!--Asistencia-->
                             <div class="form-group">
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <div class="row">
-                                        <p>Asistiré al Campamento Nueva Especie edición Primavera 2017
-                                            <input type="checkbox" name="asistente">
-                                        </p>
-                                    </div>
+                                <div class="row">
+                                {!! Form::label('asistente','Asistiré al Campamento Nueva Especie edición Primavera 2017',['class'=>'col-md-8 col-sm-8 col-xs-12']) !!}
                                 </div>
+                                    <div class="col-md-4 col-sm-4 col-xs-12">
+                                        <div class="btn-group" data-toggle="buttons">
+                                            
+                                                Si: {{Form::radio('asistente', true ,'true' ,['class' => 'flat'])}}
+                                                No: {{Form::radio('asistente', false ,'' ,['class' => 'flat'])}}
+                                            
+                                        </div>
+                                    </div>
+                                
                             </div>
                             <!--Nombre-->
                             <div class="form-group">

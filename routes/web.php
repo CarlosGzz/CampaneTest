@@ -205,7 +205,7 @@ Route::group(['prefix'=>'stafers'],function(){
 	// Routes for Staff Charts 
 	Route::get('edit/{id}',[
 		'uses' => 'StaffController@edit2',
-		'as' => 'staff.viejosNuevos'
+		'as' => 'staff.edit2'
 	]);
 
 });
