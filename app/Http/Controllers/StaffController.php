@@ -213,10 +213,10 @@ class StaffController extends Controller
         $staff->delete();
         if($staff->delete()){
             flash($staff->nombre.' eliminado exitosamente','success');
-            return redirect('/webadmin');
+            return redirect('/stafers/miembros');
         }else{
             flash($staff->nombre.' error al eliminar','success');
-            return redirect('/webadmin');
+            return redirect('/stafers/miembros');
         }
     }
 
