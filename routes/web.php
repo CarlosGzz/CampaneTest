@@ -124,6 +124,10 @@ Route::get('puesto/destroy/{id}',[
 * Routes para  Staff...
 */
 Route::resource('/staff','StaffController');
+Route::get('staff/destroy/{id}',[
+		'uses' => 'StaffController@destroy',
+		'as' => 'staff.destroy'
+		]);
 
 /*
 * Routes para encuesta Staff...
