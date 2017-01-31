@@ -537,7 +537,7 @@
                                         <select id="staff" name="staff" class="form-control"  disabled>
                                             <script type="text/javascript">
                                             $( document ).ready(function() {
-                                                $.get("{{ route('staff.dropdown')}}", 
+                                                $.get("https://campamentone.herokuapp.com/stafers/dropdown", 
                                                     function(data) {
                                                         var model = $('#staff');
                                                         var staff = jQuery.parseJSON(data);
