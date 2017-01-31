@@ -22,8 +22,7 @@ Route::get('/home', 'HomeController@index');
 /*
 * Routes para Web Admin...
 */
-Route::get('/webadmin', function()
-{
+Route::get('/webadmin', function(){
     return View::make('webadmin/webadmin');
 })->middleware('auth');
 
@@ -157,17 +156,26 @@ Route::post('staffDashboard',[
 		]);
 
 /*
-* Routes para Vivientes...
+* Routes para Staff...
 */
+
 Route::group(['prefix'=>'stafers'],function(){
-    Route::get('staff', function(){
+	Route::get('staff', function(){
 	    return View::make('staff/staffDashboard');
+	})->middleware('auth');
+
+	Route::get('campamento-actual', function(){
+	    return View::make('staff/campamentoActual');
 	})->middleware('auth');
 
 	// Routes for Datatables
 	Route::get('staffRegistrados',[
 		'uses' => 'StaffController@staffRegistrados',
 		'as' => 'staff.registrados'
+	]);
+	Route::get('staffAsistentes',[
+		'uses' => 'StaffController@staffAsistentes',
+		'as' => 'staff.asistentes'
 	]);
 	Route::get('staffPagados',[
 		'uses' => 'StaffController@staffPagados',
@@ -194,6 +202,12 @@ Route::group(['prefix'=>'stafers'],function(){
 		'as' => 'staff.viejosNuevos'
 	]);
 
+	// Routes for Staff Charts 
+	Route::get('edit/{id}',[
+		'uses' => 'StaffController@edit2',
+		'as' => 'staff.viejosNuevos'
+	]);
+
 });
 /*
 * Routes para Viviente...
@@ -207,4 +221,17 @@ Route::post('vivientesEncuestaSend', 'VivienteController@store');
 Route::get('encuestaVivientes',function(){
     return View::make('public/encuestaVivientes');
 	});
+
+/*
+* Routes para encuesta User...
+*/
+Route::resource('/user','UserController');
+Route::get('user/edit/{id}',[
+		'uses' => 'UserController@edit',
+		'as' => 'user.edit'
+		]);
+Route::get('user/destroy/{id}',[
+		'uses' => 'UserController@destroy',
+		'as' => 'user.destroy'
+		]);
 

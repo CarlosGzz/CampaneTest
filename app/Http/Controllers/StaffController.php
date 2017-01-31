@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Staff;
 
+use App\Viviente;
+
 use App\Campamento;
 
 use App\Http\Traits\CampamentoTrait;
@@ -107,6 +109,18 @@ class StaffController extends Controller
     }
 
     /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit2($id)
+    {
+        $staff = Staff::find($id);
+        return view('staff/editStaff')->with('staff', $staff);
+    }
+
+    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -145,6 +159,47 @@ class StaffController extends Controller
         }
         return redirect('/graciasStaff');
     }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update2(Request $request, $id)
+    {
+        $staff = Staff::find($id);
+        $staffUpdate = new Staff($request->all());
+        $staff->nombre = $request->nombre;
+        $staff->apellidoPaterno = $request->apellidoPaterno;
+        $staff->apellidoMaterno = $request->apellidoMaterno;
+        $staff->genero = $request->genero;
+        $staff->fechaNacimiento = $request->fechaNacimiento;
+        $staff->carrera = $request->carrera;
+        $staff->universidad = $request->universidad;
+        $staff->estudianteGraduado = $request->estudianteGraduado;
+        $staff->gaia_id = $request->gaia_id;
+        $staff->rolDeseado = $request->rolDeseado;
+        $staff->pulsera = $request->pulsera;
+        $staff->correo = $request->correo;
+        $staff->telefonoCel = $request->telefonoCel;
+        $staff->save();
+        foreach ($staff->campamento as $campa) {
+            echo $campa->nombre;
+            if($campa->id == $this->campamentoId){
+                return redirect('/graciasStaff');
+            }
+        }
+        if($request->asistente == true){
+            $staff->activo = true;
+            $staff->campamento()->attach($this->campamentoId);
+        }else{
+            $staff->activo = false;
+        }
+        return redirect('/stafers/miembros');
+    }
+
 
     /**
      * Remove the specified resource from storage.
@@ -330,6 +385,7 @@ class StaffController extends Controller
     public function staffAsistentes()
     {
         $staff = Staff::all();
+        $vivientes = Viviente::all();
         //dd($vivientes);
         $staffsArray = array();
         $staffArray = array();
@@ -337,20 +393,25 @@ class StaffController extends Controller
             if($staf->campamento){
                 foreach ($staf->campamento as $campa) {
                     if($campa->id == $this->campamentoId){
-                        $staffArray['id'] = $staf->id;
                         $staffArray['nombre'] = $staf->nombre;
                         $staffArray['apellido'] = $staf->apellidoPaterno." ".$staf->apellidoMaterno;
-                        $staffArray['genero'] = $staf->genero;
-                        $edad = Carbon::parse($staf->fechaNacimiento);
-                        $staffArray['edad'] = $edad->age;
-                        $staffArray['correo'] = $staf->correo;
-                        $staffArray['celular'] = $staf->telefonoCel;
                         $staffArray['gaia'] = $staf->gaia->gaia;
-                        $staffArray['rolDeseado'] = $staf->rolDeseado;
-                        $staffArray['pulsera'] = $staf->pulsera;
-                        $staffArray['carrera'] = $staf->carrera;
-                        $staffArray['universidad'] = $staf->universidad;
-                        $staffArray['estudianteGraduado'] = $staf->estudianteGraduado;
+                        if(!empty($campa->puesto)){
+                            $staffArray['puesto'] = $campa->puesto->puesto;
+                        }else{
+                            $staffArray['puesto'] = 'No Asignado';
+                        }
+                        $staffArray['pagado'] = $campa->pagado;
+                        if(!empty($campa->vehiculo)){
+                            $staffArray['vehiculo'] = $campa->vehiculo;
+                        }else{
+                            $staffArray['vehiculo'] = 'No';
+                        }
+                        $staffArray['correo'] = $staf->correo;
+                        $staffArray['telefonoCel'] = $staf->telefonoCel;
+                        $staffArray['vivientes'] = $staf->vivientes->count();
+                        $staffArray['aPagar'] = '350';
+                        $staffArray['id'] = $staf->id;
                         array_push($staffsArray, $staffArray);
                     }
                 }

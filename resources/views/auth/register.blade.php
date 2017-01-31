@@ -64,6 +64,7 @@
                                   <option value="admin">Web Admin</option>
                                   <option value="coordinador">Coordinador Campamento</option>
                                   <option value="mesa">Mesa Campamento</option>
+                                  <option value="general">Coordinador General</option>
                                 </select>
 
                                 @if ($errors->has('tipo'))

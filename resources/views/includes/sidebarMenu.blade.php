@@ -34,6 +34,24 @@
             <div class="menu_section">
                 <h3></h3>
                 <ul class="nav side-menu">
+                    @if(Auth::user()->tipo == "general")
+                    <!--Staff Menu-->
+                    <li>
+                        <a>
+                            <i class="fa fa-star"></i>Staff
+                            <span class="fa fa-chevron-down"></span>
+                        </a>
+                        <ul class="nav child_menu" style="display: none">
+                            <li>
+                                <a href="{{ url('/stafers/staff') }}">Miembros</a>
+                            </li>
+                            <li>
+                                <a href="{{ url('/stafers/campamento-actual') }}">Campamento Actual</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <!--/Staff Menu-->
+                    @else
                     <!--Dashboard Menu-->
                     <li class="active" >
                         <a href="{{ url('/home') }}"> 
@@ -75,10 +93,10 @@
                         </a>
                         <ul class="nav child_menu" style="display: none">
                             <li>
-                                <a href="{{ url('/staff/miembros') }}">Miembros</a>
+                                <a href="{{ url('/stafers/staff') }}">Miembros</a>
                             </li>
                             <li>
-                                <a href="{{ url('/staff/campamento-actual') }}">Campamento Actual</a>
+                                <a href="{{ url('/stafers/campamento-actual') }}">Campamento Actual</a>
                             </li>
                             <li>
                                 <a href="{{ url('/staff/asistencias') }}">Asistencias</a>
@@ -171,6 +189,7 @@
                         </a>
                     </li>
                     <!--/Admin Menu-->
+                    @endif
                     @endif
                     @endif
 

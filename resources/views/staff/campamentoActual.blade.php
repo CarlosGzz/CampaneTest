@@ -42,19 +42,17 @@
 					<table id="staff" class="table table-striped table-bordered">
 						<thead>
 							<tr>
-								<th>Id</th>
 								<th>Nombre</th>
 								<th>Apellido</th>
-								<th>Genero</th>
-								<th>Edad</th>
-								<th>Correo</th>
-								<th>Celular</th>
 								<th>Gaia</th>
-								<th>Rol Deseado</th>
-								<th>Pulsera</th>
-								<th>Carrera</th>
-								<th>Universidad</th>
-								<th>Estatus</th>
+								<th>Rol</th>
+								<th>Pagado</th>
+								<th>Vehiculo</th>
+								<th>Correo</th>
+								<th>Telefono Cel</th>
+								<th>Vivientes</th>
+								<th>A Pagar</th>
+								<th>Id</th>
 							</tr>
 						</thead>
 					</table>
@@ -108,22 +106,20 @@
               	dom: "Bfrtip",
               	keys: true,
               	ajax: {
-			        url: "{{ url('/stafers/staffRegistrados') }}",
+			        url: "{{ url('/stafers/staffAsistentes') }}",
 			        dataSrc: ''
 			    },
-			  	columns: [{ data: 'id' },
-			  		{ data: 'nombre' },
+			  	columns: [{ data: 'nombre' },
 			  		{ data: 'apellido' },
-			  		{ data: 'genero' },
-			  		{ data: 'edad' },
-			  		{ data: 'correo' },
-			  		{ data: 'celular' },
 			  		{ data: 'gaia' },
-			  		{ data: 'rolDeseado' },
-			  		{ data: 'pulsera' },
-			  		{ data: 'carrera' },
-			  		{ data: 'universidad' },
-			  		{ data: 'estudianteGraduado' }],
+			  		{ data: 'puesto' },
+			  		{ data: 'pagado' },
+			  		{ data: 'vehiculo' },
+			  		{ data: 'correo' },
+			  		{ data: 'telefonoCel' },
+			  		{ data: 'vivientes' },
+			  		{ data: 'aPagar' },
+			  		{ data: 'id' },],
               buttons: [
                 {
                   extend: "copy",
@@ -139,17 +135,6 @@
                 },
               ],
               responsive: true,
-              fnRowCallback: function( nRow, aData ) {
-              		var id = aData['actual'];
-					var $nRow = $(nRow);
-					if (id == "1") { 
-						$nRow.css({"background-color":"#00FFFF"})
-						$('td:eq(4)', nRow).html( 'Si' );
-					}else{
-						$('td:eq(4)', nRow).html( 'No' );
-					}
-					return nRow
-					}
             });
           }
         };

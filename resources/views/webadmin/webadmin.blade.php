@@ -22,7 +22,6 @@
 		</div>
 	</div>
 	<!--Datatable Campamentos-->
-
 	<div class="row" id="tablaCampamentos">
 		<div class="col-md-12 col-sm-12 col-xs-12">
 			<div class="x_panel">
@@ -87,7 +86,7 @@
 				</div>
 			</div>
 		</div>
-		<!--Gaias Datatable-->
+		<!--Puestos Datatable-->
 		<div class="col-md-6 col-sm-6 col-xs-12">
 			<div class="x_panel">
 				<div class="x_title">
@@ -121,6 +120,43 @@
 		<div id="editarEliminarPuesto"></div>
 		@include('campamento/altaPuesto')
 	</div>
+
+	<!--Datatable Campamentos-->
+	<div class="row" id="tablaUser">
+		<div class="col-md-12 col-sm-12 col-xs-12">
+			<div class="x_panel">
+				<div class="x_title">
+					<h2>Tabla de Usuarios <small></small></h2>
+					<ul class="nav navbar-right panel_toolbox">
+						<li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+						</li>
+						<li><a class="close-link"><i class="fa fa-close"></i></a>
+						</li>
+					</ul>
+					<div class="clearfix"></div>
+				</div>
+				<div class="x_content">
+					<p class="text-muted font-13 m-b-30">
+					</p>
+					<table id="user" class="table table-striped table-bordered">
+						<thead>
+							<tr>
+								<th>id</th>
+								<th>Nombre</th>
+								<th>User</th>
+								<th>Correo</th>
+								<th>Tipo</th>
+							</tr>
+						</thead>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div id="editarEliminarUser"></div>
+	</div>
+
 </div>
 @endsection
 
@@ -326,6 +362,61 @@
 		    } );
 		} );
     </script>
+
+    <!-- Users -->
+    <script>
+      $(document).ready(function() {
+        var handleDataTableButtons = function() {
+          if ($("#user").length) {
+            $("#user").DataTable({
+              dom: "Bfrtip",
+              keys: true,
+              ajax: {
+			        url: "{{ url('/user') }}",
+			        dataSrc: ''
+			    },
+			  columns: [{ data: 'id' },
+			  			{ data: 'name' },
+			  			{ data: 'user' },
+			  			{ data: 'email' },
+			  			{ data: 'tipo' }],
+              buttons: [
+                {
+                  extend: "copy",
+                  className: "btn-sm"
+                },
+                {
+                  extend: "print",
+                  className: "btn-sm"
+                },
+              ],
+              responsive: true,
+            });
+          }
+        };
+
+        TableManageButtons = function() {
+          "use strict";
+          return {
+            init: function() {
+              handleDataTableButtons();
+            }
+          };
+        }();
+
+        TableManageButtons.init();
+      });
+    </script>
+    <script type="text/javascript">
+	    $(document).ready(function() {
+		    var table = $('#user').DataTable();
+
+		    $('#user tbody').on('click', 'tr', function () {
+		        var data = table.row( this ).data();
+		        showEditUser(data['id']);
+		    } );
+		} );
+    </script>
     <!-- /DATATABLES -->
 
     <!-- Ajax para desplegar el editor de campamento -->
@@ -379,6 +470,22 @@
 		}
 	</script>
 
+	<!-- Ajax para desplegar el editor de User -->
+	<script type="text/javascript">
+		function showEditUser(obj){
+			$.ajax({
+		       url: "{{ url('/user/edit') }}"+"/"+obj,
+		       success: function(html) {
+		       		$("#editarEliminarUser").empty();
+		          	$("#editarEliminarUser").append(html);
+		       },error: function(){
+		       		$("#editarEliminarUser").empty();
+		       		$("#editarEliminarUser").append("No se puede editar este elemento");
+		       }
+		    });
+		}
+	</script>
+
 	<!-- Borrar-->
 	<script>
 		function borrar(obj) {
@@ -396,6 +503,9 @@
 		}
 		function cerrarPuesto() {
 			$("#editarEliminarPuesto").empty();
+		}
+		function cerrarUser() {
+			$("#editarEliminarUser").empty();
 		}
 	</script>
 @stop
