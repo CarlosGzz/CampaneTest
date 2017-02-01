@@ -19,7 +19,7 @@ class Familiar extends Model
     'telefono',
     'celular',
     'correo',
-    'esViviente'
+    'esViviente',
     ];
     /**
      * Relacion de muchos a uno con Viviente

@@ -212,7 +212,7 @@ class VivienteController extends Controller
      */
     public function edit($id)
     {
-         $viviente = Viviente::find($id);
+        $viviente = Viviente::find($id);
         return view('vivientes/editViviente')->with('viviente', $viviente);
     }
 
@@ -225,7 +225,36 @@ class VivienteController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $viviente = Viviente::find($id);
+        /*$viviente->nombre = $request->nombre;
+        $viviente->apellidoPaterno = $request->apellidoPaterno;
+        $viviente->apellidoMaterno = $request->apellidoMaterno;
+        $viviente->genero = $request->genero;
+        $viviente->fechaNacimiento = $request->fechaNacimiento;
+        $viviente->telefonoCel = $request->celular;
+        $viviente->telefonoCasa = $request->telefonoCasa;
+        $viviente->correo = $request->correo;
+        $viviente->restriccionesAlimentarias = $request->restriccionesAlimentarias;
+        $viviente->alergias = $request->alergias;
+        $viviente->medioCampamento = $request->medioCampamento;
+        if($request->staff == 'Otro'){
+            
+            $viviente->otro = $request->otroStaff;
+        }else{
+            $viviente->staff_id = $request->staff;
+        }
+        $viviente->campamento_id = $this->campamentoId;
+        $saved = $viviente->save();
+        if(!$saved){
+            $error++;
+        }*/
+        $viviente->observaciones = $request->observaciones;
+        $saved = $viviente->save();
+        if(!$saved){
+            $error++;
+        }
+        flash($viviente->nombre.' modificado exitosamente','success');
+        return redirect('/vivientes');
     }
 
     /**

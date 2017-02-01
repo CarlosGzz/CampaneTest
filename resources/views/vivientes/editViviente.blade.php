@@ -36,8 +36,8 @@
 			</div>
 			<!--Fecha Inicio-->
 			<div class="form-group">
-				{!! Form::label('name','Fecha De Inicio') !!}*
-				{!! Form::date('fechaInicio', $viviente->fechaNacimiento, ['class'=>'flatpickr form-control','required']) !!}
+				{!! Form::label('name','Observaciones') !!}*
+				{!! Form::text('observaciones', $viviente->observaciones, ['class'=>'form-control','required']) !!}
 			</div>
 			<hr>
 			<!--Boton-->

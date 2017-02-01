@@ -18,16 +18,17 @@
 	<div class="row">
 		<div class="page-title">
 			<div class="title_left">
-				<h3> Staff<small>informacion de todo el Staff</small></h3>
+				<h3> Familiares<small> informacion de familiares de vivientes</small></h3>
 			</div>
 		</div>
 	</div>
-	<!--Vivientes Registrados-->
-	<div class="row" id="tablaStaff">
+
+	<!--Vivientes Registrados Parciales-->
+	<div class="row" id="tablaFamiliares">
 		<div class="col-md-12 col-sm-12 col-xs-12">
 			<div class="x_panel">
 				<div class="x_title">
-					<h2>Tabla de Staff Registrados <small></small></h2>
+					<h2>Tabla de Familiares de Vivientes<small></small></h2>
 					<ul class="nav navbar-right panel_toolbox">
 						<li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
 						</li>
@@ -39,22 +40,17 @@
 				<div class="x_content">
 					<p class="text-muted font-13 m-b-30">
 					</p>
-					<table id="staff" class="table table-striped table-bordered">
+					<table id="familiares" class="table table-striped table-bordered">
 						<thead>
 							<tr>
-								<th>Id</th>
-								<th>Nombre</th>
-								<th>Apellido</th>
-								<th>Genero</th>
-								<th>Edad</th>
-								<th>Correo</th>
+								<th>id</th>
+								<th>Viviente</th>
+								<th>Nombre de Familiar</th>
+								<th>Relacion</th>
+								<th>Telefono</th>
 								<th>Celular</th>
-								<th>Gaia</th>
-								<th>Rol Deseado</th>
-								<th>Pulsera</th>
-								<th>Carrera</th>
-								<th>Universidad</th>
-								<th>Estatus</th>
+								<th>Correo</th>
+								<th>Es Viviente</th>
 							</tr>
 						</thead>
 					</table>
@@ -63,9 +59,8 @@
 		</div>
 	</div>
 	<div class="row">
-		<div id="editarEliminarStaff"></div>
+		<div id="editarEliminarFamiliar"></div>
 	</div>
-	<br>
 	<br>
 
 </div>
@@ -73,15 +68,6 @@
 @stop
 
 @section('scripts')
-
-	<!-- Flat DateTime Picker-->
-	<script src="https://unpkg.com/flatpickr"></script>
-	<script type="text/javascript">
-		flatpickr(".flatpickr", {
-		    altInput: true,
-    		altFormat: "j, F, Y"
-		});
-	</script>
 
 	<!-- DATATABLES -->
     <script src="/js/datatables/jquery.dataTables.min.js"></script>
@@ -99,31 +85,28 @@
     <script src="/js/datatables/jszip.min.js"></script>
     <script src="/js/datatables/pdfmake.min.js"></script>
     <script src="/js/datatables/vfs_fonts.js"></script>
-    <!-- Staff Registrado -->
+    <!-- Viviente Registrado -->
     <script>
       $(document).ready(function() {
         var handleDataTableButtons = function() {
-          if ($("#staff").length) {
-            $("#staff").DataTable({
+          if ($("#familiares").length) {
+            $("#familiares").DataTable({
               	dom: "Bfrtip",
               	keys: true,
               	ajax: {
-			        url: "{{ url('/stafers/staffRegistrados') }}",
+			        url: "{{ url('/familiares') }}",
 			        dataSrc: ''
 			    },
-			  	columns: [{ data: 'id' },
+			  	columns: [
+			  		{ data: 'id' },
+			  		{ data: 'viviente' },
 			  		{ data: 'nombre' },
-			  		{ data: 'apellido' },
-			  		{ data: 'genero' },
-			  		{ data: 'edad' },
-			  		{ data: 'correo' },
+			  		{ data: 'tipoFamiliar' },
+			  		{ data: 'telefono' },
 			  		{ data: 'celular' },
-			  		{ data: 'gaia' },
-			  		{ data: 'rolDeseado' },
-			  		{ data: 'pulsera' },
-			  		{ data: 'carrera' },
-			  		{ data: 'universidad' },
-			  		{ data: 'estudianteGraduado' }],
+			  		{ data: 'correo' },
+			  		{ data: 'esViviente' },
+			  		],
               buttons: [
                 {
                   extend: "copy",
@@ -139,6 +122,16 @@
                 },
               ],
               responsive: true,
+              fnRowCallback: function( nRow, aData ) {
+              		var id = aData['esViviente'];
+					var $nRow = $(nRow);
+					if (id == "1") { 
+						$nRow.css({"background-color":"#FF0000"})
+						$('td:eq(7)', nRow).html( 'Si' );
+					}else{
+						$('td:eq(7)', nRow).html( 'No' );
+					}
+				}
             });
           }
         };
@@ -157,11 +150,11 @@
     </script>
     <script type="text/javascript">
 	    $(document).ready(function() {
-		    var table = $('#staff').DataTable();
+		    var table = $('#familiares').DataTable();
 
-		    $('#staff tbody').on('click', 'tr', function () {
+		    $('#familiares tbody').on('click', 'tr', function () {
 		        var data = table.row( this ).data();
-		        showEditViviente(data['id']);
+		        showEditFamiliar(data['id']);
 		    } );
 		} );
     </script>
@@ -169,19 +162,15 @@
 
     <!-- Ajax para desplegar el editor de campamento -->
 	<script type="text/javascript">
-		function showEditViviente(obj){
+		function showEditFamiliar(obj){
 			$.ajax({
-		       url: "{{ url('/stafers/edit') }}"+"/"+obj,
+		       url: "{{ url('/familiares/edit') }}"+"/"+obj,
 		       success: function(html) {
-		       		$("#editarEliminarStaff").empty();
-		          	$("#editarEliminarStaff").append(html);
-		          	flatpickr(".flatpickr", {
-					    altInput: true,
-			    		altFormat: "j, F, Y"
-					});
+		       		$("#editarEliminarFamiliar").empty();
+		          	$("#editarEliminarFamiliar").append(html);
 		       },error: function(){
-		       		$("#editarEliminarStaff").empty();
-		       		$("#editarEliminarStaff").append("No se puede editar este elemento");
+		       		$("#editarEliminarFamiliar").empty();
+		       		$("#editarEliminarFamiliar").append("No se puede editar este elemento");
 		       }
 		    });
 		}
@@ -190,14 +179,14 @@
 	<!-- Borrar-->
 	<script>
 		function borrar(obj) {
-		    var r = confirm('Confirmar eliminacion de staff');
+		    var r = confirm('Confirmar eliminacion de familiar');
 		    if (r == true) {
 		        window.location = $('#'+obj.id).data('route')
 		    }
 		}
 
-		function cerrarStaff() {
-			$("#editarEliminarStaff").empty();
+		function cerrarFamiliar() {
+			$("#editarEliminarFamiliar").empty();
 		}
 	</script>
 @stop

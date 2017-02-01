@@ -1,49 +1,27 @@
-<html lang="en">
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <!-- Meta, title, CSS, favicons, etc. -->
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description" content="Encuesta Staff Campamento Nueva Especie">
-        <meta name="author" content="Carlos Gonzalez">
-        <link rel="icon" href="/images/lxmlogo.png">
-
-        <title>Encuesta Staff Campamento Nueva Especie</title>
-
-        <!-- Bootstrap core CSS -->
-
-        <link href="/css/bootstrap.min.css" rel="stylesheet">
-
-        <link href="/fonts/css/font-awesome.min.css" rel="stylesheet">
-        <link href="/css/animate.min.css" rel="stylesheet">
-
-        <!-- Custom styling plus plugins -->
-        <link href="/css/custom.css" rel="stylesheet">
-        <link href="/css/icheck/flat/green.css" rel="stylesheet" />
-        <!-- Select2 -->
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
-        <!-- Flat Picker -->
-        <link rel="stylesheet" href="https://unpkg.com/flatpickr/dist/flatpickr.min.css">
-
-        <script src="/js/jquery.min.js"></script>
-
-
-    </head>
-
-    <body>
-        <!-- page content -->
-        <br>
-        <div class="row">
-            <div lass="col-md-8 col-sm-8 col-xs-10 col-md-offset-2 col-sm-offset-2 col-xs-offset-1">
-                <div class="page-title">
-                    <h3 style="color: white; text-align: center;">
-                        Formulario Staff Campamento Nueva Especie
-                    </h3>
+@extends('layouts.public')
+@section('metas')
+    <meta name="description" content="Encuesta Staff Antiguo">
+@endsection
+@section('title')
+    Encuesta Staff Antiguo Campamento Nueva Especie Password
+@endsection
+@section('content')
+    <div class="container body">
+        <div class="main_container">
+            <div class="row">
+                <div class="col-md-8 col-sm-8 col-xs-10 col-md-offset-2 col-sm-offset-2 col-xs-offset-1">
+                    <div class="page-title">
+                        <h3 style="font-size:40px ;color: #9B9692; text-align: center;">
+                            <img src="/images/logoNe.png" style="width:150px; height:auto;">
+                            Staff Encuesta
+                            <img src="/images/logoNe.png" style="width:150px; height:auto;">
+                            <br>
+                            Nueva Especie
+                        </h3>
+                    </div>
                 </div>
             </div>
-        </div>
-        <br>
+            <br>
         <div class="clearfix"></div>
 
         <div class="row">
@@ -53,7 +31,7 @@
                     <div class="alert alert-danger" role="alert" id="mensajeStaff" style="display: none;"></div>
                     <div class="x_content" id="contenido">
                         <br>
-                        {!! Form::open(['route' => ['staff.update', $staff->id], 'method' => 'PUT', 'class'=>'form-horizontal form-label-left', 'id'=>'staffForm','data-parsley-validate']) !!}
+                        {!! Form::open(['route' => ['updateStaff', $staff->id], 'method' => 'PUT', 'class'=>'form-horizontal form-label-left', 'id'=>'staffForm','data-parsley-validate']) !!}
                             <div class="form-group">
                                 <div class="control-label col-md-9 col-sm-9 col-xs-12">
                                     <div class="row">
@@ -289,4 +267,4 @@
 
 
     </body>
-</html>
+@endsection

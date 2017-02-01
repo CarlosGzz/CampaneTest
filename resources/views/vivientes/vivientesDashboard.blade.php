@@ -185,17 +185,6 @@
                 },
               ],
               responsive: true,
-              fnRowCallback: function( nRow, aData ) {
-              		var id = aData['actual'];
-					var $nRow = $(nRow);
-					if (id == "1") { 
-						$nRow.css({"background-color":"#00FFFF"})
-						$('td:eq(4)', nRow).html( 'Si' );
-					}else{
-						$('td:eq(4)', nRow).html( 'No' );
-					}
-					return nRow
-					}
             });
           }
         };
