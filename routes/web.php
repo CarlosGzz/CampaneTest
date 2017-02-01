@@ -281,6 +281,11 @@ Route::get('encuestaVivientes',function(){
 
 Route::post('vivientesEncuestaSend', 'EncuestaController@storeViviente');
 
+Route::post('vivientesEncuestaStore',[
+		'uses' => 'EncuestaController@storeViviente',
+		'as' => 'encuestaVivientes.store',
+		]);
+
 Route::get('gracias',function(){
     return View::make('public/gracias');
 	});

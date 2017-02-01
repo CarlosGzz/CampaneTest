@@ -1,7 +1,7 @@
 
 <h2 class="StepTitle">Datos Personales</h2>
 <br>
-{!! Form::open(['route' => 'vivientes.store', 'method' => 'POST','id'=>'encuestaVivienteForm']) !!}
+{!! Form::open(['route' => 'encuestaVivientes.store', 'method' => 'POST','id'=>'encuestaVivienteForm']) !!}
 <div id="datosPersonales" data-parsley-validate class="form-horizontal form-label-left" style="width:100%" >
     <div class="form-group">
         <label for="nombre" class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name"> 
