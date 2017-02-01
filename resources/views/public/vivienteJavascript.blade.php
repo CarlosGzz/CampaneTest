@@ -344,7 +344,7 @@
 <!-- Dropdown de staff-->
 <script type="text/javascript">
     $( document ).ready(function() {
-        $.get("http://campamentone.herokuapp.com/staffDropdown", 
+        $.get("https://campamentone.herokuapp.com/staffDropdown", 
             function(data) {
                 var model = $('#staff');
                 var staff = jQuery.parseJSON(data);

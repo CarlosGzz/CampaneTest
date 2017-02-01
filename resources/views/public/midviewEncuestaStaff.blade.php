@@ -68,7 +68,7 @@
     <script src="/js/custom.js"></script>
     <script type="text/javascript">
     $( document ).ready(function() {
-        $.get("http://campamentone.herokuapp.com/staffDropdown", 
+        $.get("https://campamentone.herokuapp.com/staffDropdown", 
             function(data) {
                 var model = $('#staffViejo');
                 model.empty();
