@@ -68,7 +68,7 @@
     <script src="/js/custom.js"></script>
     <script type="text/javascript">
     $( document ).ready(function() {
-        $.get("{{ route('staffDropdown')}}", 
+        $.get("http://campamentone.herokuapp.com/staffDropdown", 
             function(data) {
                 var model = $('#staffViejo');
                 model.empty();
