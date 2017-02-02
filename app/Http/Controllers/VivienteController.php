@@ -21,6 +21,7 @@ class VivienteController extends Controller
      */
     public function __construct()
     {
+        $this->middleware('auth');
         $this->campamentoId = CampamentoTrait::campamentoActual();
     }
 
@@ -31,165 +32,8 @@ class VivienteController extends Controller
      */
     public function index()
     {
-        $vivientes = $this->vivientesEnCampamentoRegistrados();
 
-        return view('vivientes.vivientesDashboard')->with('vivientes', $vivientes);
-
-    }
-
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        $error = 0;
-
-        $viviente = new Viviente();
-        $viviente->nombre = $request->nombre;
-        $viviente->apellidoPaterno = $request->apellidoPaterno;
-        $viviente->apellidoMaterno = $request->apellidoMaterno;
-        $viviente->genero = $request->genero;
-        $viviente->fechaNacimiento = $request->fechaNacimiento;
-        $viviente->telefonoCel = $request->celular;
-        $viviente->telefonoCasa = $request->telefonoCasa;
-        $viviente->correo = $request->correo;
-        $viviente->restriccionesAlimentarias = $request->restriccionesAlimentarias;
-        $viviente->alergias = $request->alergias;
-        $viviente->medioCampamento = $request->medioCampamento;
-        if($request->staff == 'Otro'){
-            
-            $viviente->otro = $request->otroStaff;
-        }else{
-            $viviente->staff_id = $request->staff;
-        }
-        $viviente->campamento_id = $this->campamentoId;
-        $saved = $viviente->save();
-        if(!$saved){
-            $error++;
-        }
-
-        $encuesta = new Encuesta();
-        $encuesta->viviente_id = $viviente->id;
-        $encuesta->reservado = $request->reservado;
-        $encuesta->sabiduria = $request->sabiduria;
-        $encuesta->idealista = $request->idealista;
-        $encuesta->explosivo = $request->explosivo;
-        $encuesta->optimismo = $request->optimismo;
-
-        $encuesta->prudencia = $request->prudencia;
-        $encuesta->disciplina = $request->disciplina;
-        $encuesta->pasion = $request->pasion;
-        $encuesta->hipersensibilidad = $request->hipersensibilidad;
-        $encuesta->generosidad = $request->generosidad;
-
-        $encuesta->handy = $request->handy;
-        $encuesta->teson = $request->teson;
-        $encuesta->elocuente = $request->elocuente;
-        $encuesta->aventado = $request->aventado;
-        $encuesta->empatia = $request->empatia;
-
-        $encuesta->misterioso = $request->misterioso;
-        $encuesta->fortaleza = $request->fortaleza;
-        $encuesta->improvisar = $request->improvisar;
-        $encuesta->afable = $request->afable;
-        $encuesta->lealtad = $request->lealtad;
-
-        $encuesta->franco = $request->franco;
-        $encuesta->sobreprotector = $request->sobreprotector;
-        $encuesta->creativo = $request->creativo;
-        $encuesta->movido = $request->movido;
-        $encuesta->triunfar = $request->triunfar;
-
-        $encuesta->personalidad = $request->personalidad;
-        $encuesta->mismo = $request->mismo;
-        $encuesta->cualidades = $request->cualidades;
-        $encuesta->defectos = $request->defectos;
-        $encuesta->fiesta = $request->fiesta;
-        $saved = $encuesta->save();
-        if(!$saved){
-            $error++;
-        }
-
-        $padre = new Familiar();
-        $madre = new Familiar();
-        $amigo1 = new Familiar();
-        $amigo2 = new Familiar();
-        $amigo3 = new Familiar();
-
-        $padre->viviente_id = $viviente->id;
-        $padre->tipoFamiliar = 'Padre';
-        $padre->nombre = $request->nombrePadre;
-        $padre->celular = $request->celularPadre;
-        $padre->telefono = $request->telefonoPadre;
-        $padre->correo = $request->correoPadre;
-
-        $madre->viviente_id = $viviente->id;
-        $madre->tipoFamiliar = 'Madre';
-        $madre->nombre = $request->nombreMadre;
-        $madre->celular = $request->celularMadre;
-        $madre->telefono = $request->telefonoMadre;
-        $madre->correo = $request->correoMadre;
-
-        $amigo1->viviente_id = $viviente->id;
-        $amigo1->tipoFamiliar = 'Amigo1';
-        $amigo1->nombre = $request->nombreAmigo1;
-        $amigo1->celular = $request->celularAmigo1;
-        $amigo1->telefono = $request->telefonoAmigo1;
-        $amigo1->correo = $request->correoAmigo1;
-
-        $amigo2->viviente_id = $viviente->id;
-        $amigo2->tipoFamiliar = 'Amigo2';
-        $amigo2->nombre = $request->nombreAmigo2;
-        $amigo2->celular = $request->celularAmigo2;
-        $amigo2->telefono = $request->telefonoAmigo2;
-        $amigo2->correo = $request->correoAmigo2;
-
-        $amigo3->viviente_id = $viviente->id;
-        $amigo3->tipoFamiliar = 'Amigo3';
-        $amigo3->nombre = $request->nombreAmigo3;
-        $amigo3->celular = $request->celularAmigo3;
-        $amigo3->telefono = $request->telefonoAmigo3;
-        $amigo3->correo = $request->correoAmigo3;
-
-        $saved = $padre->save();
-        if(!$saved){
-            $error++;
-        }
-        $saved = $madre->save();
-        if(!$saved){
-            $error++;
-        }
-        $saved = $amigo1->save();
-        if(!$saved){
-            $error++;
-        }
-        $saved = $amigo2->save();
-        if(!$saved){
-            $error++;
-        }
-        $saved = $amigo3->save();
-        if(!$saved){
-            $error++;
-        }
-
-        if($error>0){
-            return 2;
-        }
-        return 1;
+        return view('vivientes.vivientesDashboard');
 
     }
 
@@ -226,35 +70,52 @@ class VivienteController extends Controller
     public function update(Request $request, $id)
     {
         $viviente = Viviente::find($id);
-        /*$viviente->nombre = $request->nombre;
-        $viviente->apellidoPaterno = $request->apellidoPaterno;
-        $viviente->apellidoMaterno = $request->apellidoMaterno;
-        $viviente->genero = $request->genero;
-        $viviente->fechaNacimiento = $request->fechaNacimiento;
-        $viviente->telefonoCel = $request->celular;
-        $viviente->telefonoCasa = $request->telefonoCasa;
-        $viviente->correo = $request->correo;
-        $viviente->restriccionesAlimentarias = $request->restriccionesAlimentarias;
-        $viviente->alergias = $request->alergias;
-        $viviente->medioCampamento = $request->medioCampamento;
-        if($request->staff == 'Otro'){
-            
-            $viviente->otro = $request->otroStaff;
+        if(isset($request->nombre))
+            $viviente->nombre = $request->nombre;
+
+        if(isset($request->apellidoPaterno))
+            $viviente->apellidoPaterno = $request->apellidoPaterno;
+
+        if(isset($request->apellidoMaterno))
+            $viviente->apellidoMaterno = $request->apellidoMaterno;
+
+        if(isset($request->fechaNacimiento))
+            $viviente->fechaNacimiento = $request->fechaNacimiento;
+
+        if(isset($request->celular))
+            $viviente->telefonoCel = $request->celular;
+
+        if(isset($request->telefonoCasa))
+            $viviente->telefonoCasa = $request->telefonoCasa;
+
+        if(isset($request->correo))
+            $viviente->correo = $request->correo;
+
+        if(isset($request->medioCampamento)){
+            $viviente->medioCampamento = $request->medioCampamento;
+
+            if($request->medioCampamento == 'Miembro de Staff'){
+                if($request->staff == 'Otro'){
+                    $viviente->otro = $request->otroStaff;
+                }else{
+                    $viviente->staff_id = $request->staff;
+                }
+            }else{
+                $viviente->staff_id = null;
+                $viviente->otro = null;
+            }
+        }
+        if(isset($request->observaciones))
+            $viviente->observaciones = $request->observaciones;
+
+        $saved = $viviente->save();
+        if($viviente->save()){
+            flash($viviente->nombre.' modificado exitosamente','success');
+            return redirect('/vivientes');
         }else{
-            $viviente->staff_id = $request->staff;
+            flash($viviente->nombre.' modificado exitosamente','success');
+            return redirect('/vivientes');
         }
-        $viviente->campamento_id = $this->campamentoId;
-        $saved = $viviente->save();
-        if(!$saved){
-            $error++;
-        }*/
-        $viviente->observaciones = $request->observaciones;
-        $saved = $viviente->save();
-        if(!$saved){
-            $error++;
-        }
-        flash($viviente->nombre.' modificado exitosamente','success');
-        return redirect('/vivientes');
     }
 
     /**
@@ -297,13 +158,17 @@ class VivienteController extends Controller
             $vivienteArray['celular'] = $viviente->telefonoCel;
             $vivienteArray['correo'] = $viviente->correo;
             $vivienteArray['observaciones'] = $viviente->observaciones;
-            $vivienteArray['restricciones'] = $viviente->restriccionesAlimentarias;
-            $vivienteArray['alergias'] = $viviente->alergias;
             $vivienteArray['medio'] = $viviente->medioCampamento;
-            if(!empty($viviente->otro)){
-                $vivienteArray['staff'] = $viviente->otro;
+            if($vivienteArray['medio'] == 'Miembro de Staff'){
+                if(!empty($viviente->otro)){
+                    $vivienteArray['staff'] = $viviente->otro;
+                }else{
+                    if($viviente->staff){
+                        $vivienteArray['staff'] = $viviente->staff->nombre." ".$viviente->staff->apellidoPaterno;
+                    }
+                }
             }else{
-                $vivienteArray['staff'] = $viviente->staff->nombre." ".$viviente->staff->apellidoPaterno;
+                $vivienteArray['staff'] = '';
             }
             array_push($vivientesArray, $vivienteArray);
         }
@@ -340,10 +205,14 @@ class VivienteController extends Controller
             $vivienteArray['restricciones'] = $viviente->restriccionesAlimentarias;
             $vivienteArray['alergias'] = $viviente->alergias;
             $vivienteArray['medio'] = $viviente->medioCampamento;
-            if(!empty($viviente->otro)){
-                $vivienteArray['staff'] = $viviente->otro;
+            if($vivienteArray['medio'] == 'Miembro de Staff'){
+                if(!empty($viviente->otro)){
+                    $vivienteArray['staff'] = $viviente->otro;
+                }else{
+                    $vivienteArray['staff'] = $viviente->staff->nombre." ".$viviente->staff->apellidoPaterno;
+                }
             }else{
-                $vivienteArray['staff'] = $viviente->staff->nombre." ".$viviente->staff->apellidoPaterno;
+                $vivienteArray['staff'] = '';
             }
             array_push($vivientesArray, $vivienteArray);
         }
@@ -388,106 +257,4 @@ class VivienteController extends Controller
         }
         return json_encode($vivientesArray); 
     }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function vivientesRegistradosContador()
-    {
-        $vivientes = Viviente::where('campamento_id',$this->campamentoId)->count();
-        return $vivientes;
-    }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function vivientesPagadosContador()
-    {
-        $vivientes = Viviente::where('campamento_id',$this->campamentoId)->where('pagado',850)->count();
-        return $vivientes;
-    }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function vivientesPagadosParcialesContador()
-    {
-        $vivientes = Viviente::where('campamento_id',$this->campamentoId)->whereBetween('pagado', [1, 849])->count();
-        return $vivientes;
-    }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function edadesChartData()
-    {
-        $vivientes = Viviente::where('campamento_id',$this->campamentoId)->get();
-        $edadesArray = array();
-        $edadesArray['sinEdad']=0;
-        $edadesArray['intervalo1']=0;
-        $edadesArray['intervalo2']=0;
-        $edadesArray['intervalo3']=0;
-        $edadesArray['intervalo4']=0;
-        $edadesArray['intervalo5']=0;
-        $edadesArray['mayores']=0;
-
-        foreach ($vivientes as $viviente) {
-            $edad = Carbon::parse($viviente->fechaNacimiento);
-            if($edad->age < 18){
-                if($edad->age==0){
-                    $edadesArray['sinEdad']++;
-                }else{
-                    $edadesArray['intervalo1']++;
-                }
-
-            }
-            if($edad->age == 18 || $edad->age == 19){
-                $edadesArray['intervalo2']++;
-            }
-            if($edad->age == 20 || $edad->age == 21){
-                $edadesArray['intervalo3']++;
-            }
-            if($edad->age == 22 || $edad->age == 23){
-                $edadesArray['intervalo4']++;
-            }
-            if($edad->age == 24 || $edad->age == 25){
-                $edadesArray['intervalo5']++;
-            }
-            if($edad->age > 25){
-                $edadesArray['mayores']++;
-            }
-        }
-        return json_encode($edadesArray);
-    }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function generoChartData()
-    {
-        $vivientes = Viviente::where('campamento_id',$this->campamentoId)->get();
-        $generoArray = array();
-        $generoArray['hombres'] = 0;
-        $generoArray['mujeres'] = 0;
-        foreach ($vivientes as $viviente) {
-            if($viviente->genero == 'M'){
-                $generoArray['hombres']++;
-            }
-            if($viviente->genero == 'F'){
-                $generoArray['mujeres']++;
-            }
-        }
-        return json_encode($generoArray);
-    }
-
-
-
-
 }

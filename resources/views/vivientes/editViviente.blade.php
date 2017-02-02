@@ -28,16 +28,61 @@
 				</div>
 			</div>
 			@endif
-			{!! Form::open(['route' => ['vivientes.update', $viviente->id], 'method' => 'PATCH']) !!}
-			<!--Pais-->
+			{!! Form::open(['route' => ['viviente.update', $viviente->id], 'method' => 'PATCH']) !!}
+			<!--Nombre-->
 			<div class="form-group">
-				{!! Form::label('name','Nombre de Campamento') !!}*
-				{!! Form::text('nombre',$viviente->nombre,['class'=>'form-control', 'placeholder' => 'Campamento OT-16', 'required']) !!}
+				{!! Form::label('nombre','Nombre') !!}*
+				{!! Form::text('nombre',$viviente->nombre,['class'=>'form-control', 'placeholder' => 'Jorge', 'required']) !!}
 			</div>
-			<!--Fecha Inicio-->
+			<!--Apellido Paterno-->
 			<div class="form-group">
-				{!! Form::label('name','Observaciones') !!}*
-				{!! Form::text('observaciones', $viviente->observaciones, ['class'=>'form-control','required']) !!}
+				{!! Form::label('apellidoPaterno','Apellido Paterno') !!}*
+				{!! Form::text('apellidoPaterno',$viviente->apellidoPaterno,['class'=>'form-control', 'placeholder' => 'Gonzalez', 'required']) !!}
+			</div>
+			<!--Apellido Materno-->
+			<div class="form-group">
+				{!! Form::label('apellidoMaterno','Apellido Materno') !!}*
+				{!! Form::text('apellidoMaterno',$viviente->apellidoMaterno,['class'=>'form-control', 'placeholder' => 'Gonzalez', 'required']) !!}
+			</div>
+			<!--Fecha Nacimiento-->
+			<div class="form-group">
+				{!! Form::label('fechaNacimiento','Fecha de Nacimiento') !!}*
+				{!! Form::date('fechaNacimiento', $viviente->fechaNacimiento, ['class'=>'flatpickr form-control','required']) !!}
+			</div>
+			<!--Telefono-->
+			<div class="form-group">
+				{!! Form::label('telefonoCasa','Telefono') !!}*
+				{!! Form::text('telefonoCasa',$viviente->telefonoCasa,['class'=>'form-control', 'placeholder' => '811778451', 'required']) !!}
+			</div>
+			<!--Celular-->
+			<div class="form-group">
+				{!! Form::label('celular','Celular') !!}*
+				{!! Form::text('celular',$viviente->telefonoCel,['class'=>'form-control', 'placeholder' => '811334815', 'required']) !!}
+			</div>
+			<!--Correo-->
+			<div class="form-group">
+				{!! Form::label('correo','Correo') !!}*
+				{!! Form::text('correo',$viviente->correo,['class'=>'form-control', 'placeholder' => 'kemen@kemen.com', 'required']) !!}
+			</div>
+			<!--Medio Campamento-->
+			<div class="form-group">
+				{!! Form::label('medioCampamento','Medio de Campamento*') !!}
+				{!! Form::select('medioCampamento', array('Facebook' => 'Facebook', 'Anuncio' => 'Anuncio/Poster', 'Stand Universitario' => 'Stand Universitario', 'Miembro de Staff' => 'Miembro de Staff', 'Otro' => 'Otro'), $viviente->medioCampamento,['class'=>'form-control select','id' => 'medioCampamento', 'required'])!!}
+			</div>
+			<!--staff-->
+			<div class="form-group">
+				{!! Form::label('staff','Staff') !!}
+				{!! Form::select('staff', array(), $viviente->staff_id,['class'=>'form-control select','id'=>'staffViejo','disabled'])!!}
+			</div>
+			<!--Otro-->
+			<div class="form-group">
+				{!! Form::label('otroStaff','Otro') !!}*
+				{!! Form::text('otroStaff',$viviente->otro,['class'=>'form-control', 'placeholder' => 'Carla Ortega','id'=>'otroStaff', 'disabled']) !!}
+			</div>
+			<!--Observaciones-->
+			<div class="form-group">
+				{!! Form::label('name','Observaciones') !!}
+				{!! Form::text('observaciones', $viviente->observaciones, ['class'=>'form-control']) !!}
 			</div>
 			<hr>
 			<!--Boton-->
@@ -49,3 +94,21 @@
 		</div>
 	</div>
 </div>
+<!-- Si es miembro de Staff-->
+<script>
+	$("#medioCampamento").on('select2:closing',function(){
+		if($("#medioCampamento").val() == "Miembro de Staff"){
+			$("#staffViejo").removeAttr('disabled');
+		}else{
+			$("#staffViejo").attr('disabled', 'disabled');
+			$("#otroStaff").attr('disabled', 'disabled');
+		}
+	});
+	$("#staffViejo").on('change',function(){
+		if($("#staffViejo").val() == "Otro"){
+			$("#otroStaff").removeAttr('disabled');
+		}else{
+			$("#otroStaff").attr('disabled', 'disabled');
+		}
+	});
+</script>

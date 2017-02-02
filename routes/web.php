@@ -79,21 +79,20 @@ Route::get('puesto/destroy/{id}',[
 /*
 * Routes para Vivientes...
 */
-Route::group(['prefix'=>'vivientes'],function(){
-	// Routes of Dashboards
-    Route::get('vivientes', function(){
-	    return View::make('vivientes/vivientesDashboard');
-	})->middleware('auth');
-
-	Route::resource('/','VivienteController');
-	Route::get('vivientes/edit/{id}',[
+Route::resource('/viviente','VivienteController');
+Route::get('viviente/edit/{id}',[
 		'uses' => 'VivienteController@edit',
 		'as' => 'vivientes.edit'
 		]);
-	Route::get('vivientes/destroy/{id}',[
+	Route::get('viviente/destroy/{id}',[
 		'uses' => 'VivienteController@destroy',
 		'as' => 'vivientes.destroy'
 		]);
+Route::group(['prefix'=>'vivientes'],function(){
+	// Routes of Dashboards
+    Route::get('', function(){
+	    return View::make('vivientes/vivientesDashboard');
+	})->middleware('auth');
 
 	Route::get('familiares', function(){
 	    return View::make('familiares/familiaresDashboard');

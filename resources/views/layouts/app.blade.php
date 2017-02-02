@@ -6,6 +6,9 @@
         <div class="main_container">
             @include('layouts.menu')
             <div class="right_col " role="main">
+                <div class="row">
+                    @include('flash::message')
+                </div>
                 @yield('content')
                 @include('includes.footer')
             

@@ -54,11 +54,12 @@ class EncuestaController extends Controller
         $viviente->restriccionesAlimentarias = $request->restriccionesAlimentarias;
         $viviente->alergias = $request->alergias;
         $viviente->medioCampamento = $request->medioCampamento;
-        if($request->staff == 'Otro'){
-            
+        if($request->medioCampamento == 'Miembro de Staff'){
+            if($request->staff == 'Otro'){
             $viviente->otro = $request->otroStaff;
-        }else{
-            $viviente->staff_id = $request->staff;
+            }else{
+                $viviente->staff_id = $request->staff;
+            }
         }
         $viviente->campamento_id = $this->campamentoId;
         $saved = $viviente->save();

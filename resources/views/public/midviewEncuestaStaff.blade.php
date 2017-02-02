@@ -40,7 +40,7 @@
                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                     <h3>Ya he sido Staff</h3>
                                     {!! Form::open(['route' => 'encuestaStaffViejo', 'method' => 'POST', 'class'=>'form-vertical']) !!}
-                                    <!--Pulsera-->
+                                    <!--staff-->
                                     <div class="form-group">
                                         <div class="col-md-12 col-sm-12 col-xs-12">
                                             {!! Form::select('id', array(), '',['class'=>'form-control select','id'=>'staffViejo', 'required'])!!}
