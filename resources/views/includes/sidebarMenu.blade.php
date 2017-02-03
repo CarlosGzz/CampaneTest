@@ -79,7 +79,7 @@
                                 <a href="{{ url('/vivientes/palancas') }}">Palancas</a>
                             </li>
                             <li>
-                                <a href="{{ url('/vivientes/encuesta') }}">Encuesta</a>
+                                <a href="{{ url('/vivientes/encuestas') }}">Encuesta</a>
                             </li>
                         </ul>
                     </li>

@@ -69,16 +69,42 @@
 				{!! Form::label('medioCampamento','Medio de Campamento*') !!}
 				{!! Form::select('medioCampamento', array('Facebook' => 'Facebook', 'Anuncio' => 'Anuncio/Poster', 'Stand Universitario' => 'Stand Universitario', 'Miembro de Staff' => 'Miembro de Staff', 'Otro' => 'Otro'), $viviente->medioCampamento,['class'=>'form-control select','id' => 'medioCampamento', 'required'])!!}
 			</div>
-			<!--staff-->
-			<div class="form-group">
-				{!! Form::label('staff','Staff') !!}
-				{!! Form::select('staff', array(), $viviente->staff_id,['class'=>'form-control select','id'=>'staffViejo','disabled'])!!}
-			</div>
-			<!--Otro-->
-			<div class="form-group">
-				{!! Form::label('otroStaff','Otro') !!}*
-				{!! Form::text('otroStaff',$viviente->otro,['class'=>'form-control', 'placeholder' => 'Carla Ortega','id'=>'otroStaff', 'disabled']) !!}
-			</div>
+			@if($viviente->medioCampamento == 'Miembro de Staff')
+				@if($viviente->staff_id == null)
+					<!--staff-->
+					<div class="form-group">
+						{!! Form::label('staff','Staff') !!}
+						{!! Form::select('staff', array(), 'Otro',['class'=>'form-control','id'=>'staffViejo'])!!}
+					</div>
+					<!--Otro-->
+					<div class="form-group">
+						{!! Form::label('otroStaff','Otro') !!}*
+						{!! Form::text('otroStaff',$viviente->otro,['class'=>'form-control', 'placeholder' => '','id'=>'otroStaff']) !!}
+					</div>
+				@else
+					<!--staff-->
+					<div class="form-group">
+						{!! Form::label('staff','Staff') !!}
+						{!! Form::select('staff', array(), $viviente->staff_id,['class'=>'form-control','id'=>'staffViejo'])!!}
+					</div>
+					<!--Otro-->
+					<div class="form-group">
+						{!! Form::label('otroStaff','Otro') !!}*
+						{!! Form::text('otroStaff','',['class'=>'form-control', 'placeholder' => '','id'=>'otroStaff', 'disabled']) !!}
+					</div>
+				@endif
+			@else
+				<!--staff-->
+				<div class="form-group">
+					{!! Form::label('staff','Staff') !!}
+					{!! Form::select('staff', array(), '',['class'=>'form-control','id'=>'staffViejo','disabled'])!!}
+				</div>
+				<!--Otro-->
+				<div class="form-group">
+					{!! Form::label('otroStaff','Otro') !!}*
+					{!! Form::text('otroStaff','',['class'=>'form-control', 'placeholder' => '','id'=>'otroStaff', 'disabled']) !!}
+				</div>
+			@endif
 			<!--Observaciones-->
 			<div class="form-group">
 				{!! Form::label('name','Observaciones') !!}
@@ -104,7 +130,7 @@
 			$("#otroStaff").attr('disabled', 'disabled');
 		}
 	});
-	$("#staffViejo").on('change',function(){
+	$("#staffViejo").on('select2:closing',function(){
 		if($("#staffViejo").val() == "Otro"){
 			$("#otroStaff").removeAttr('disabled');
 		}else{

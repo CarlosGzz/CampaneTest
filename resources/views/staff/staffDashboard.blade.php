@@ -18,10 +18,11 @@
 	<div class="row">
 		<div class="page-title">
 			<div class="title_left">
-				<h3> Staff<small>informacion de todo el Staff</small></h3>
+				<h3> Staff <small>informacion de todo el Staff</small></h3>
 			</div>
 		</div>
 	</div>
+	@include('staff.staffTilesRegistrados')
 	<!--Vivientes Registrados-->
 	<div class="row" id="tablaStaff">
 		<div class="col-md-12 col-sm-12 col-xs-12">
@@ -55,6 +56,7 @@
 								<th>Carrera</th>
 								<th>Universidad</th>
 								<th>Estatus</th>
+								<th>Activo</th>
 							</tr>
 						</thead>
 					</table>
@@ -66,6 +68,7 @@
 		<div id="editarEliminarStaff"></div>
 	</div>
 	<br>
+	@include('gaias.gaiasStaffTiles')
 	<br>
 
 </div>
@@ -73,131 +76,5 @@
 @stop
 
 @section('scripts')
-
-	<!-- Flat DateTime Picker-->
-	<script src="https://unpkg.com/flatpickr"></script>
-	<script type="text/javascript">
-		flatpickr(".flatpickr", {
-		    altInput: true,
-    		altFormat: "j, F, Y"
-		});
-	</script>
-
-	<!-- DATATABLES -->
-    <script src="/js/datatables/jquery.dataTables.min.js"></script>
-    <script src="/js/datatables/dataTables.bootstrap.js"></script>*
-    <script src="/js/datatables/dataTables.buttons.min.js"></script>
-    <script src="/js/datatables/buttons.bootstrap.min.js"></script>
-    <script src="/js/datatables/buttons.flash.min.js"></script>*
-    <script src="/js/datatables/buttons.html5.min.js"></script>
-    <script src="/js/datatables/buttons.print.min.js"></script>
-    <script src="/js/datatables/dataTables.fixedHeader.min.js"></script>
-    <script src="/js/datatables/dataTables.keyTable.min.js"></script>
-    <script src="/js/datatables/dataTables.responsive.min.js"></script>
-    <script src="/js/datatables/responsive.bootstrap.min.js"></script>*
-    <script src="/js/datatables/datatables.scroller.min.js"></script>
-    <script src="/js/datatables/jszip.min.js"></script>
-    <script src="/js/datatables/pdfmake.min.js"></script>
-    <script src="/js/datatables/vfs_fonts.js"></script>
-    <!-- Staff Registrado -->
-    <script>
-      $(document).ready(function() {
-        var handleDataTableButtons = function() {
-          if ($("#staff").length) {
-            $("#staff").DataTable({
-              	dom: "Bfrtip",
-              	keys: true,
-              	ajax: {
-			        url: "{{ url('/stafers/staffRegistrados') }}",
-			        dataSrc: ''
-			    },
-			  	columns: [{ data: 'id' },
-			  		{ data: 'nombre' },
-			  		{ data: 'apellido' },
-			  		{ data: 'genero' },
-			  		{ data: 'edad' },
-			  		{ data: 'correo' },
-			  		{ data: 'celular' },
-			  		{ data: 'gaia' },
-			  		{ data: 'rolDeseado' },
-			  		{ data: 'pulsera' },
-			  		{ data: 'carrera' },
-			  		{ data: 'universidad' },
-			  		{ data: 'estudianteGraduado' }],
-              buttons: [
-                {
-                  extend: "copy",
-                  className: "btn-sm"
-                },
-                {
-                  extend: "excel",
-                  className: "btn-sm"
-                },
-                {
-                  extend: "print",
-                  className: "btn-sm"
-                },
-              ],
-              responsive: true,
-            });
-          }
-        };
-
-        TableManageButtons = function() {
-          "use strict";
-          return {
-            init: function() {
-              handleDataTableButtons();
-            }
-          };
-        }();
-
-        TableManageButtons.init();
-      });
-    </script>
-    <script type="text/javascript">
-	    $(document).ready(function() {
-		    var table = $('#staff').DataTable();
-
-		    $('#staff tbody').on('click', 'tr', function () {
-		        var data = table.row( this ).data();
-		        showEditViviente(data['id']);
-		    } );
-		} );
-    </script>
-    <!-- /DATATABLES -->
-
-    <!-- Ajax para desplegar el editor de campamento -->
-	<script type="text/javascript">
-		function showEditViviente(obj){
-			$.ajax({
-		       url: "{{ url('/stafers/edit') }}"+"/"+obj,
-		       success: function(html) {
-		       		$("#editarEliminarStaff").empty();
-		          	$("#editarEliminarStaff").append(html);
-		          	flatpickr(".flatpickr", {
-					    altInput: true,
-			    		altFormat: "j, F, Y"
-					});
-		       },error: function(){
-		       		$("#editarEliminarStaff").empty();
-		       		$("#editarEliminarStaff").append("No se puede editar este elemento");
-		       }
-		    });
-		}
-	</script>
-
-	<!-- Borrar-->
-	<script>
-		function borrar(obj) {
-		    var r = confirm('Confirmar eliminacion de staff');
-		    if (r == true) {
-		        window.location = $('#'+obj.id).data('route')
-		    }
-		}
-
-		function cerrarStaff() {
-			$("#editarEliminarStaff").empty();
-		}
-	</script>
+	@include('staff.staffDashboardJavascripts')
 @stop

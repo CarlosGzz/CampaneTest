@@ -12,7 +12,7 @@ class Staff extends Model
      * @fillable array
      */
     protected $fillable = [
-       'id', 'nombre', 'apellidoMaterno', 'apellidoPaterno', 'fechaNacimiento', 'genero', 'carrera', 'universidad', 'estudianteGraduado', 'gaia_id', 'rolDeseado', 'pulsera', 'correo', 'telefonoCel'
+       'id', 'nombre', 'apellidoMaterno', 'apellidoPaterno', 'fechaNacimiento', 'genero', 'carrera', 'universidad', 'estudianteGraduado', 'gaia_id', 'rolDeseado', 'pulsera', 'correo', 'telefonoCel','activo'
     ];
 
 	/**

@@ -32,9 +32,7 @@ class VivienteController extends Controller
      */
     public function index()
     {
-
         return view('vivientes.vivientesDashboard');
-
     }
 
     /**
@@ -257,4 +255,339 @@ class VivienteController extends Controller
         }
         return json_encode($vivientesArray); 
     }
+    public function distribucionDeGaiasDeVivientes()
+    {
+        $vivientes = Viviente::where('campamento_id',$this->campamentoId)->where('pagado','>','0')->get();
+        $gaias = array();
+        $gaias['draco'] = 0;
+        $gaias['fenix'] = 0;
+        $gaias['lycan'] = 0;
+        $gaias['quimera'] = 0;
+        $gaias['unicornio'] = 0;
+        $gaias['sinGaia'] = 0;
+        foreach ($vivientes as $viviente) {
+            if($viviente->gaia){
+                if($viviente->gaia->gaia == 'Draco'){
+                    $gaias['draco']++;
+                }
+                if($viviente->gaia->gaia == 'Fénix'){
+                    $gaias['fenix']++;
+                }
+                if($viviente->gaia->gaia == 'Lycan'){
+                    $gaias['lycan']++;
+                }
+                if($viviente->gaia->gaia == 'Quimera'){
+                    $gaias['quimera']++;
+                }
+                if($viviente->gaia->gaia == 'Unicornio'){
+                    $gaias['unicornio']++;
+                }
+            }else{
+                $gaias['sinGaia']++;
+            }
+        }
+        return json_encode($gaias); 
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function edadesChartDataPagados()
+    {
+        $vivientes = Viviente::where('campamento_id',$this->campamentoId)->where('pagado','>','0')->get();
+        $edadesArray = array();
+        $edadesArray['sinEdad']=0;
+        $edadesArray['intervalo1']=0;
+        $edadesArray['intervalo2']=0;
+        $edadesArray['intervalo3']=0;
+        $edadesArray['intervalo4']=0;
+        $edadesArray['intervalo5']=0;
+        $edadesArray['mayores']=0;
+
+        foreach ($vivientes as $viviente) {
+            $edad = Carbon::parse($viviente->fechaNacimiento);
+            if($edad->age < 18){
+                if($edad->age==0){
+                    $edadesArray['sinEdad']++;
+                }else{
+                    $edadesArray['intervalo1']++;
+                }
+
+            }
+            if($edad->age == 18 || $edad->age == 19){
+                $edadesArray['intervalo2']++;
+            }
+            if($edad->age == 20 || $edad->age == 21){
+                $edadesArray['intervalo3']++;
+            }
+            if($edad->age == 22 || $edad->age == 23){
+                $edadesArray['intervalo4']++;
+            }
+            if($edad->age == 24 || $edad->age == 25){
+                $edadesArray['intervalo5']++;
+            }
+            if($edad->age > 25){
+                $edadesArray['mayores']++;
+            }
+        }
+        return json_encode($edadesArray);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function generoChartDataPagados()
+    {
+        $vivientes = Viviente::where('campamento_id',$this->campamentoId)->where('pagado','>','0')->get();
+        $generoArray = array();
+        $generoArray['hombres'] = 0;
+        $generoArray['mujeres'] = 0;
+        foreach ($vivientes as $viviente) {
+            if($viviente->genero == 'M'){
+                $generoArray['hombres']++;
+            }
+            if($viviente->genero == 'F'){
+                $generoArray['mujeres']++;
+            }
+        }
+        return json_encode($generoArray);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function vegetarianosVeganosChart()
+    {
+        $vivientes = Viviente::where('campamento_id',$this->campamentoId)->where('pagado','>','0')->get();
+        $vegetarianosVeganosArray = array();
+        $vegetarianosVeganosArray['vegetarianos'] = 0;
+        $vegetarianosVeganosArray['veganos'] = 0;
+        foreach ($vivientes as $viviente) {
+            if($viviente->restriccionesAlimentarias == 'Vegetariano'){
+                $vegetarianosVeganosArray['vegetarianos']++;
+            }
+            if($viviente->restriccionesAlimentarias == 'Vegano'){
+                $vegetarianosVeganosArray['veganos']++;
+            }
+        }
+        return json_encode($vegetarianosVeganosArray);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function encuestasDeVivientes()
+    {
+        $vivientes = Viviente::where('campamento_id',$this->campamentoId)->where('pagado','>','0')->get();
+        $encuestasArray = array();
+        $encuestaArray = array();
+        $cualidades = array();
+        $tableString = '';
+        foreach ($vivientes as $viviente) {
+            $quimera = 0.0;
+            $lycan = 0.0;
+            $draco = 0.0;
+            $fenix = 0.0;
+            $unicorino = 0.0;
+            $encuestaArray['viviente'] = $viviente->nombre.' '.$viviente->apellidoPaterno.' '.$viviente->apellidoMaterno;
+
+            $cualidades[0] = $viviente->encuesta->reservado;
+            $cualidades[1] = $viviente->encuesta->prudencia;
+            $cualidades[2] = $viviente->encuesta->handy;
+            $cualidades[3] = $viviente->encuesta->misterioso;
+            $cualidades[4] = $viviente->encuesta->franco;
+            $cualidades[5] = $viviente->encuesta->sabiduria;
+            $cualidades[6] = $viviente->encuesta->disciplina;
+            $cualidades[7] = $viviente->encuesta->teson;
+            $cualidades[8] = $viviente->encuesta->fortaleza;
+            $cualidades[9] = $viviente->encuesta->sobreprotector;
+            $cualidades[10] = $viviente->encuesta->idealista;
+            $cualidades[11] = $viviente->encuesta->pasion;
+            $cualidades[12] = $viviente->encuesta->elocuente;
+            $cualidades[13] = $viviente->encuesta->improvisar;
+            $cualidades[14] = $viviente->encuesta->creativo;
+            $cualidades[15] = $viviente->encuesta->explosivo;
+            $cualidades[16] = $viviente->encuesta->hipersensibilidad;
+            $cualidades[17] = $viviente->encuesta->aventado;
+            $cualidades[18] = $viviente->encuesta->afable;
+            $cualidades[19] = $viviente->encuesta->movido;
+            $cualidades[20] = $viviente->encuesta->optimismo;
+            $cualidades[21] = $viviente->encuesta->generosidad;
+            $cualidades[22] = $viviente->encuesta->empatia;
+            $cualidades[23] = $viviente->encuesta->lealtad;
+            $cualidades[24] = $viviente->encuesta->triunfar;
+            for($i = 0; $i<25; $i++){
+                switch ($cualidades[$i]) {
+                    case 1:
+                        $cualidades[$i]=5;
+                        break;
+                    case 2:
+                        $cualidades[$i]=4;
+                        break;
+                    case 3:
+                        $cualidades[$i]=3;
+                        break;
+                    case 4:
+                        $cualidades[$i]=2;
+                        break;
+                    case 5:
+                        $cualidades[$i]=1;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            // Ecuaciones para sacar el porcentaje de Quimera
+            $suma=0;
+            for($i = 0; $i<5; $i++){
+                $suma += $cualidades[$i];
+            }
+            $quimera = $suma*0.6666666667;
+
+            // Ecuaciones para sacar el porcentaje de Lycan
+            $suma=0;
+            for($i = 5; $i<10; $i++){
+                $suma += $cualidades[$i];
+            }
+            $lycan = $suma*0.6666666667;
+
+            // Ecuaciones para sacar el porcentaje de Draco
+            $suma=0;
+            for($i = 10; $i<15; $i++){
+                $suma += $cualidades[$i];
+            }
+            $draco = $suma*0.6666666667;
+
+            // Ecuaciones para sacar el porcentaje de Fenix
+            $suma=0;
+            for($i = 15; $i<20; $i++){
+                $suma += $cualidades[$i];
+            }
+            $fenix = $suma*0.6666666667;
+
+            // Ecuaciones para sacar el porcentaje de Unicornio
+            $suma=0;
+            for($i = 20; $i<24; $i++){
+                $suma += $cualidades[$i];
+            }
+            $unicorino = $suma*0.6666666667;
+
+            $encuestaArray['quimera'] = sprintf("%.2f%%",$quimera);
+            $encuestaArray['lycan'] = sprintf("%.2f%%",$lycan);
+            $encuestaArray['draco'] = sprintf("%.2f%%",$draco);
+            $encuestaArray['fenix'] = sprintf("%.2f%%",$fenix);
+            $encuestaArray['unicornio'] = sprintf("%.2f%%",$unicorino);
+            $encuestaArray['personalidad'] = $viviente->encuesta->personalidad;
+            $encuestaArray['mismo'] = $viviente->encuesta->mismo;
+            $encuestaArray['cualidades'] = $viviente->encuesta->cualidades;
+            $encuestaArray['defectos'] = $viviente->encuesta->defectos;
+            $encuestaArray['fiesta'] = $viviente->encuesta->fiesta;
+
+            
+            $tableString ="<table class='table table-striped table-bordered'>";
+            $tableString.="<thead>";
+            $tableString.="<tr>";
+            $tableString.="<th>Cualidad</th>";
+            $tableString.="<th>Puntaje</th>";
+            $tableString.="</tr>";
+            $tableString.="</thead>";
+            $tableString.="<tbody>";
+            $tableString.="<tr><td>Reservado</td><td style='text-align:center'>".$viviente->encuesta->reservado."</td><tr>";
+            $tableString.="<tr><td>Sabiduria</td><td style='text-align:center'>".$viviente->encuesta->sabiduria."</td><tr>";
+            $tableString.="<tr><td>Idealista</td><td style='text-align:center'>".$viviente->encuesta->idealista."</td><tr>";
+            $tableString.="<tr><td>Explosivo</td><td style='text-align:center'>".$viviente->encuesta->explosivo."</td><tr>";
+            $tableString.="<tr><td>Optimismo</td><td style='text-align:center'>".$viviente->encuesta->optimismo."</td><tr>";
+            $tableString.="</tbody>";
+            $tableString.="</table>";
+            $string = "<ul><li>Reservado -------".$viviente->encuesta->reservado."</li>";
+            $string .= "<li>Sabiduria -------".$viviente->encuesta->sabiduria."</li>";
+            $string .= "<li>Idealista -------".$viviente->encuesta->idealista."</li>";
+            $string .= "<li>Explosivo -------".$viviente->encuesta->explosivo."</li>";
+            $string .= "<li>Optimismo -------".$viviente->encuesta->optimismo."</li></ul>";
+            $encuestaArray['cualidades1'] = $tableString;
+           
+            $tableString ="<table class='table table-striped table-bordered'>";
+            $tableString.="<thead>";
+            $tableString.="<tr>";
+            $tableString.="<th>Cualidad</th>";
+            $tableString.="<th>Puntaje</th>";
+            $tableString.="</tr>";
+            $tableString.="</thead>";
+            $tableString.="<tbody>";
+            $tableString.="<tr><td>Prudencia</td><td style='text-align:center'>".$viviente->encuesta->prudencia."</td><tr>";
+            $tableString.="<tr><td>Disciplina</td><td style='text-align:center'>".$viviente->encuesta->disciplina."</td><tr>";
+            $tableString.="<tr><td>Pasion</td><td style='text-align:center'>".$viviente->encuesta->pasion."</td><tr>";
+            $tableString.="<tr><td>Hipersensibilidad</td><td style='text-align:center'>".$viviente->encuesta->hipersensibilidad."</td><tr>";
+            $tableString.="<tr><td>Generosidad</td><td style='text-align:center'>".$viviente->encuesta->generosidad."</td><tr>";
+            $tableString.="</tbody>";
+            $tableString.="</table>";
+            $encuestaArray['cualidades2'] = $tableString;
+
+            
+            $tableString ="<table class='table table-striped table-bordered'>";
+            $tableString.="<thead>";
+            $tableString.="<tr>";
+            $tableString.="<th>Cualidad</th>";
+            $tableString.="<th>Puntaje</th>";
+            $tableString.="</tr>";
+            $tableString.="</thead>";
+            $tableString.="<tbody>";
+            $tableString.="<tr><td>Handy</td><td style='text-align:center'>".$viviente->encuesta->handy."</td><tr>";
+            $tableString.="<tr><td>Téson</td><td style='text-align:center'>".$viviente->encuesta->teson."</td><tr>";
+            $tableString.="<tr><td>Elocuente</td><td style='text-align:center'>".$viviente->encuesta->elocuente."</td><tr>";
+            $tableString.="<tr><td>Aventado</td><td style='text-align:center'>".$viviente->encuesta->aventado."</td><tr>";
+            $tableString.="<tr><td>Empatia</td><td style='text-align:center'>".$viviente->encuesta->empatia."</td><tr>";
+            $tableString.="</tbody>";
+            $tableString.="</table>";
+            $encuestaArray['cualidades3'] = $tableString;
+
+           
+            $tableString ="<table class='table table-striped table-bordered'>";
+            $tableString.="<thead>";
+            $tableString.="<tr>";
+            $tableString.="<th>Cualidad</th>";
+            $tableString.="<th>Puntaje</th>";
+            $tableString.="</tr>";
+            $tableString.="</thead>";
+            $tableString.="<tbody>";
+            $tableString.="<tr><td>Misterioso</td><td style='text-align:center'>".$viviente->encuesta->misterioso."</td><tr>";
+            $tableString.="<tr><td>Fortaleza</td><td style='text-align:center'>".$viviente->encuesta->fortaleza."</td><tr>";
+            $tableString.="<tr><td>Improvisar</td><td style='text-align:center'>".$viviente->encuesta->improvisar."</td><tr>";
+            $tableString.="<tr><td>Afable</td><td style='text-align:center'>".$viviente->encuesta->afable."</td><tr>";
+            $tableString.="<tr><td>Lealtad</td><td style='text-align:center'>".$viviente->encuesta->lealtad."</td><tr>";
+            $tableString.="</tbody>";
+            $tableString.="</table>";
+            $encuestaArray['cualidades4'] = $tableString;
+
+            
+            $tableString ="<table class='table table-striped table-bordered'>";
+            $tableString.="<thead>";
+            $tableString.="<tr>";
+            $tableString.="<th>Cualidad</th>";
+            $tableString.="<th>Puntaje</th>";
+            $tableString.="</tr>";
+            $tableString.="</thead>";
+            $tableString.="<tbody>";
+            $tableString.="<tr><td>Franco</td><td style='text-align:center'>".$viviente->encuesta->franco."</td><tr>";
+            $tableString.="<tr><td>Sobreprotector</td><td style='text-align:center'>".$viviente->encuesta->sobreprotector."</td><tr>";
+            $tableString.="<tr><td>Creativo</td><td style='text-align:center'>".$viviente->encuesta->creativo."</td><tr>";
+            $tableString.="<tr><td>Movido</td><td style='text-align:center'>".$viviente->encuesta->movido."</td><tr>";
+            $tableString.="<tr><td>Triunfar</td><td style='text-align:center'>".$viviente->encuesta->triunfar."</td><tr>";
+            $tableString.="</tbody>";
+            $tableString.="</table>";
+            $encuestaArray['cualidades5'] = $tableString;
+            array_push($encuestasArray, $encuestaArray);
+        }
+        return json_encode($encuestasArray);
+    }
+
+
 }

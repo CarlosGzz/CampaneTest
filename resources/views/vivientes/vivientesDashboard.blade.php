@@ -132,7 +132,7 @@
 				<div class="x_content">
 					<p class="text-muted font-13 m-b-30">
 					</p>
-					<table id="vivientesPagados" class="table table-striped table-bordered">
+					<table id="vivientesPagadosTabla" class="table table-striped table-bordered">
 						<thead>
 							<tr>
 								<th>Genero</th>
@@ -161,11 +161,28 @@
 		<div id="editarEliminarVivientePagado"></div>
 	</div>
 	<br>
+	<!--Graficas vivientes pagados-->
 	<div class="row">
-		<div class="col-md-12 col-sm-12 col-xs-12">
-			@include('vivientes.vivientesCharts')
-		</div>
+	    <div class="page-title">
+	        <div class="title_left">
+	            <h3> Graficas de Vivientes Pagados <small></small></h3>
+	        </div>
+	    </div>
 	</div>
+	<br>
+	@include('vivientes.vivientesCharts')
+
+	<!--Fast Insights Vivientes-->
+	<div class="row">
+	    <div class="page-title">
+	        <div class="title_left">
+	            <h3> Graficas de Vivientes <small></small></h3>
+	        </div>
+	    </div>
+	</div>
+	<br>
+	@include('vivientes.vivientesChartsStaffDashboard')
+	
 
 </div>
 

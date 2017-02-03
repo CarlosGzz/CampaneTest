@@ -114,6 +114,8 @@
 				$("#vivientesPagados").empty();
 				$("#vivientesPagados").html(data); 
 				pagados = data;
+				$("#vacantes").empty();
+				$("#vacantes").html(45-pagados);
 			}
 		});
 	}
@@ -126,10 +128,6 @@
 				$("#vivientesRegistrados").html(data);
 			}
 		});
-	}
-	function vacantesAjax(){
-		$("#vacantes").empty();
-		$("#vacantes").html(45-pagados); 
 	}
 </script>
 
@@ -204,7 +202,6 @@
 		generoChart();
 		staffViejosNuevosAjax();
 		vivientesRegistradosAjax();
-		vacantesAjax();
 		vivientesPagadosAjax();
 
 		staffRegistradosAjax();

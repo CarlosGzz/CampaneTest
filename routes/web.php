@@ -98,6 +98,10 @@ Route::group(['prefix'=>'vivientes'],function(){
 	    return View::make('familiares/familiaresDashboard');
 	})->middleware('auth');
 
+	Route::get('encuestas', function(){
+	    return View::make('encuestas/encuestasDashboard');
+	})->middleware('auth');
+
 	// Routes for Datatables
 	Route::get('vivientesRegistrados',[
 		'uses' => 'VivienteController@vivientesEnCampamentoRegistrados',
@@ -108,8 +112,34 @@ Route::group(['prefix'=>'vivientes'],function(){
 		'as' => 'vivientes.registradosParciales'
 	]);
 	Route::get('vivientesPagados',[
-		'uses' => 'VivienteController@vivientesEnCampamentoPagados',
+		'uses' => 'VivienteController@vivientesEnCampamentoPagadosTotales',
 		'as' => 'vivientes.registradosPagados'
+	]);
+
+	//Tiles Gaias de Vivientes
+	Route::get('gaias',[
+		'uses' => 'VivienteController@distribucionDeGaiasDeVivientes',
+		'as' => 'vivientes.gaias'
+	]);
+
+	// Routes for Vivientes Charts Pagados
+	Route::get('vivientesEdades',[
+		'uses' => 'VivienteController@edadesChartDataPagados',
+		'as' => 'vivientes.edadesChartDataPagados'
+	]);
+	Route::get('vivientesGenero',[
+		'uses' => 'VivienteController@generoChartDataPagados',
+		'as' => 'vivientes.generoChartDataPagados'
+	]);
+	Route::get('vegetarianosVeganos',[
+		'uses' => 'VivienteController@vegetarianosVeganosChart',
+		'as' => 'vivientes.vegetarianosVeganos'
+	]);
+
+	//Tiles Gaias de Vivientes
+	Route::get('encuestasTabla',[
+		'uses' => 'VivienteController@encuestasDeVivientes',
+		'as' => 'vivientes.encuestas'
 	]);
 });
 
@@ -129,19 +159,14 @@ Route::get('familiares/destroy/{id}',[
 /*
 * Routes para  Staff...
 */
-Route::resource('/staff','StaffController');
-Route::get('staff/destroy/{id}',[
+Route::resource('/staffs','StaffController');
+Route::get('staffs/destroy/{id}',[
 		'uses' => 'StaffController@destroy',
 		'as' => 'staff.destroy'
 		]);
 
-
-/*
-* Routes para Staff...
-*/
-
-Route::group(['prefix'=>'stafers'],function(){
-	Route::get('staff', function(){
+Route::group(['prefix'=>'staff'],function(){
+	Route::get('miembros', function(){
 	    return View::make('staff/staffDashboard');
 	})->middleware('auth');
 
@@ -165,14 +190,26 @@ Route::group(['prefix'=>'stafers'],function(){
 
 	// Routes for Staff Charts 
 	Route::get('edit/{id}',[
-		'uses' => 'StaffController@edit2',
-		'as' => 'staff.edit2'
+		'uses' => 'StaffController@edit',
+		'as' => 'staff.edit'
 	]);
 
 	// Routes for Staff Charts 
 	Route::get('dropdown',[
 		'uses' => 'StaffController@dropdown',
 		'as' => 'staff.dropdown'
+	]);
+
+	//Tiles Gaias de Vivientes
+	Route::get('gaias',[
+		'uses' => 'StaffController@distribucionDeGaiasDeStaff',
+		'as' => 'staff.gaias'
+	]);
+
+	//Tiles Staff 
+	Route::get('staffTiles',[
+		'uses' => 'StaffController@staffTiles',
+		'as' => 'staff.staffTiles'
 	]);
 
 });

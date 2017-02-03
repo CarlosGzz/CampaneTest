@@ -37,23 +37,7 @@ class StaffController extends Controller
      */
     public function index()
     {
-        $staff = Staff::all();
-        return $staff->toJson();
-    }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function indexActual()
-    {
-        //$staff = Staff::with('campamento');
-        $staff = DB::table('staff')
-            ->join('campamento_staff', 'staff.id', '=', 'campamento_staff.staff_id')
-            ->where('campamento_staff.campamento_id',$this->campamentoId)
-            ->get();
-        return $staff->toJson();
+        return view('staff.staffDashboard');
     }
 
     /**
@@ -74,16 +58,7 @@ class StaffController extends Controller
      */
     public function store(Request $request)
     {
-        $staff = new Staff($request->all());
-        if($request->asistente == 1){
-            $staff->activo = true;
-            $staff->save();
-            $staff->campamento()->attach($this->campamentoId);
-        }else{
-            $staff->activo = false;
-            $staff->save();
-        }
-        return redirect('/graciasStaff');
+        //
     }
 
     /**
@@ -106,18 +81,6 @@ class StaffController extends Controller
     public function edit($id)
     {
         $staff = Staff::find($id);
-        return view('public/encuestaStaffViejo')->with('staff', $staff);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit2($id)
-    {
-        $staff = Staff::find($id);
         return view('staff/editStaff')->with('staff', $staff);
     }
 
@@ -130,6 +93,7 @@ class StaffController extends Controller
      */
     public function update(Request $request, $id)
     {
+        //dd($request);
         $staff = Staff::find($id);
         $staffUpdate = new Staff($request->all());
         $staff->nombre = $request->nombre;
@@ -145,51 +109,16 @@ class StaffController extends Controller
         $staff->pulsera = $request->pulsera;
         $staff->correo = $request->correo;
         $staff->telefonoCel = $request->telefonoCel;
-        $staff->save();
-        foreach ($staff->campamento as $campa) {
-            echo $campa->nombre;
-            if($campa->id == $this->campamentoId){
-                return redirect('/graciasStaff');
-            }
-        }
-        if($request->asistente == true){
-            $staff->activo = true;
-            $staff->campamento()->attach($this->campamentoId);
+        if(isset($request->activo)){
+            $staff->activo = $request->activo;
         }else{
-            $staff->activo = false;
+            $staff->activo = 0;
         }
-        return redirect('/graciasStaff');
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update2(Request $request, $id)
-    {
-        $staff = Staff::find($id);
-        $staffUpdate = new Staff($request->all());
-        $staff->nombre = $request->nombre;
-        $staff->apellidoPaterno = $request->apellidoPaterno;
-        $staff->apellidoMaterno = $request->apellidoMaterno;
-        $staff->genero = $request->genero;
-        $staff->fechaNacimiento = $request->fechaNacimiento;
-        $staff->carrera = $request->carrera;
-        $staff->universidad = $request->universidad;
-        $staff->estudianteGraduado = $request->estudianteGraduado;
-        $staff->gaia_id = $request->gaia_id;
-        $staff->rolDeseado = $request->rolDeseado;
-        $staff->pulsera = $request->pulsera;
-        $staff->correo = $request->correo;
-        $staff->telefonoCel = $request->telefonoCel;
         $staff->save();
         foreach ($staff->campamento as $campa) {
             echo $campa->nombre;
             if($campa->id == $this->campamentoId){
-                return redirect('/graciasStaff');
+                return redirect('/staff/miembros');
             }
         }
         if($request->asistente == true){
@@ -222,95 +151,6 @@ class StaffController extends Controller
     }
 
     /**
-     * Staff pagados en Campamento Corriente
-     *
-     * @param  void
-     * @return \Illuminate\Http\Response
-     */
-    public function dashboard(Request $request)
-    {
-        if($request->pass == 'campane17'){
-            return view('public/staffDashboard');
-        }else{
-            return view('public/staffHome');
-        }
-    }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function staffPagadosContador()
-    {
-        $staff = Staff::all();
-        $staffCampaPagados = 0;
-        foreach ($staff as $staf) {
-            if($staf->campamento){
-                foreach ($staf->campamento as $campa) {
-                    if($campa->id == $this->campamentoId){
-                        if(!empty($staf->pagado)){
-                            $staffCampaPagados++;
-                        }
-                    }
-                }
-            }
-        }
-        return $staffCampaPagados;
-    }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function staffAsistentesContador()
-    {
-        $staff = Staff::all();
-        $staffCampa = 0;
-        foreach ($staff as $staf) {
-            if($staf->campamento){
-                foreach ($staf->campamento as $campa) {
-                    if($campa->id == $this->campamentoId){
-                        $staffCampa++;
-                    }
-                }
-            }
-        }
-        return $staffCampa;
-    }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function staffRegistradosContador()
-    {
-        $staff = Staff::all()->count();
-        return $staff;
-    }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function staffViejosNuevosContador()
-    {
-        $staff = Staff::all();
-        $viejosNuevos['viejos'] = 0;
-        $viejosNuevos['nuevos'] = 0;
-        foreach ($staff as $staf) {
-            if($staf->pulsera == 'roja'){
-                $viejosNuevos['viejos']++;
-            }
-            if($staf->pulsera == 'plateada'){
-                $viejosNuevos['viejos']++;
-            }
-        }
-        $viejosNuevos['nuevos'] = $staff->count() - $viejosNuevos['viejos'];
-        return $viejosNuevos;
-    }
-    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -336,6 +176,7 @@ class StaffController extends Controller
             $staffArray['carrera'] = $staf->carrera;
             $staffArray['universidad'] = $staf->universidad;
             $staffArray['estudianteGraduado'] = $staf->estudianteGraduado;
+            $staffArray['activo'] = $staf->activo;
             array_push($staffsArray, $staffArray);
         }
         return json_encode($staffsArray); 
@@ -426,18 +267,63 @@ class StaffController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function dropdown()
+    public function distribucionDeGaiasDeStaff()
     {
         $staff = Staff::all();
-        //dd($vivientes);
-        $staffsArray = array();
-        $staffArray = array();
+        $gaias = array();
+        $gaias['draco'] = 0;
+        $gaias['fenix'] = 0;
+        $gaias['lycan'] = 0;
+        $gaias['quimera'] = 0;
+        $gaias['unicornio'] = 0;
         foreach ($staff as $staf) {
-            $staffArray['id'] = $staf->id;
-            $staffArray['nombre'] = $staf->nombre." ".$staf->apellidoPaterno." ".$staf->apellidoMaterno;
-            array_push($staffsArray, $staffArray);
+            if($staf->gaia){
+                if($staf->gaia->gaia == 'Draco'){
+                    $gaias['draco']++;
+                }
+                if($staf->gaia->gaia == 'Fénix'){
+                    $gaias['fenix']++;
+                }
+                if($staf->gaia->gaia == 'Lycan'){
+                    $gaias['lycan']++;
+                }
+                if($staf->gaia->gaia == 'Quimera'){
+                    $gaias['quimera']++;
+                }
+                if($staf->gaia->gaia == 'Unicornio'){
+                    $gaias['unicornio']++;
+                }
+            }
         }
-        return json_encode($staffsArray);
+        return json_encode($gaias); 
     }
 
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function staffTiles()
+    {
+        $staff = Staff::all();
+        $satffTiles = array();
+        $satffTiles['total'] = Staff::all()->count();
+        $satffTiles['activo'] = 0;
+        $satffTiles['inactivo'] = 0;
+        $satffTiles['registrados'] = 0;
+        foreach ($staff as $staf) {
+
+            if($staf->activo == '1'){
+                $satffTiles['activo']++;
+            }else{
+                $satffTiles['inactivo']++;
+            }
+            foreach ($staf->campamento as $campa) {
+                if($campa->id == $this->campamentoId){
+                    $satffTiles['registrados']++;
+                }
+            }
+        }
+        return json_encode($satffTiles); 
+    }
 }

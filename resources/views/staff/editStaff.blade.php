@@ -28,7 +28,7 @@
 		    		</div>
 		    	</div>
 		    	@endif
-		    	{!! Form::open(['route' => ['staff.update', $staff->id], 'method' => 'PATCH']) !!}
+		    	{!! Form::open(['route' => ['staffs.update', $staff->id], 'method' => 'PATCH']) !!}
 		    	<!--Nombre-->
 		    	<div class="form-group">
 		    		{!! Form::label('nombre','Nombre') !!}*
@@ -122,6 +122,18 @@
 		    		{!! Form::label('telefonoCel','Celular*') !!}
 		    		{!! Form::text('telefonoCel',$staff->telefonoCel,['class'=>'form-control', 'placeholder' => '8117784890','maxlength' => '120', 'required']) !!}
 		    	</div>
+
+		    	
+		    	<!--Activo-->
+		    	<div class="form-group">
+		    		{!! Form::label('activo','Activo') !!}
+		    		@if($staff->activo == 1)
+		    		{!! Form::checkbox('activo', '1', true,['class'=>'form-control']) !!}
+		    		@else
+		    		{!! Form::checkbox('activo', '1', false,['class'=>'form-control']) !!}
+		    		@endif
+		    	</div>
+		    	
 
 		    	<hr>
 			<!--Boton-->
