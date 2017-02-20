@@ -303,6 +303,48 @@ class StaffController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function distribucionDeGaiasDeStaffRegistradosACampamento()
+    {
+        $staff = Staff::all();
+        $gaias = array();
+        $gaias['draco'] = 0;
+        $gaias['fenix'] = 0;
+        $gaias['lycan'] = 0;
+        $gaias['quimera'] = 0;
+        $gaias['unicornio'] = 0;
+        foreach ($staff as $staf) {
+            if($staf->campamento){
+                foreach ($staf->campamento as $campa) {
+                    if($campa->id == $this->campamentoId){
+                        if($staf->gaia){
+                            if($staf->gaia->gaia == 'Draco'){
+                                $gaias['draco']++;
+                            }
+                            if($staf->gaia->gaia == 'Fénix'){
+                                $gaias['fenix']++;
+                            }
+                            if($staf->gaia->gaia == 'Lycan'){
+                                $gaias['lycan']++;
+                            }
+                            if($staf->gaia->gaia == 'Quimera'){
+                                $gaias['quimera']++;
+                            }
+                            if($staf->gaia->gaia == 'Unicornio'){
+                                $gaias['unicornio']++;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return json_encode($gaias); 
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function staffTiles()
     {
         $staff = Staff::all();

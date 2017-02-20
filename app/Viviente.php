@@ -72,4 +72,12 @@ class Viviente extends Model
     {
         return $this->belongsTo('App\Campamento');
     }
+
+    /**
+     * Relacion de uno a muchos con Palancas
+     */
+    public function ingreso()
+    {
+        return $this->hasMany('App\Ingreso');
+    }
 }

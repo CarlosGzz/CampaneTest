@@ -142,6 +142,10 @@ Route::group(['prefix'=>'vivientes'],function(){
 		'as' => 'vivientes.encuestas'
 	]);
 });
+Route::get('vivientesDropdown',[
+	'uses' => 'VivienteController@vivientesDropdown',
+	'as' => 'vivientesDropdown',
+]);
 
 /*
 * Routes para Familiares...
@@ -200,10 +204,15 @@ Route::group(['prefix'=>'staff'],function(){
 		'as' => 'staff.dropdown'
 	]);
 
-	//Tiles Gaias de Vivientes
+	//Tiles Gaias de Staff
 	Route::get('gaias',[
 		'uses' => 'StaffController@distribucionDeGaiasDeStaff',
 		'as' => 'staff.gaias'
+	]);
+
+	Route::get('gaiasRegistrados',[
+		'uses' => 'StaffController@distribucionDeGaiasDeStaffRegistradosACampamento',
+		'as' => 'staff.gaiasRegistrados'
 	]);
 
 	//Tiles Staff 
@@ -212,6 +221,29 @@ Route::group(['prefix'=>'staff'],function(){
 		'as' => 'staff.staffTiles'
 	]);
 
+});
+
+/*
+* Routes para Dashboard de Finanzas...
+*/
+Route::group(['prefix'=>'finanzas'],function(){
+	Route::get('',function(){
+     	return View::make('finanzas/finanzasDashboard');
+    })->middleware('auth');
+    //Alta Finanzas 
+	Route::get('staffTiles',[
+		'uses' => 'EgresoController@store',
+		'as' => 'finanzas.altaEgreso'
+	]);
+
+    //Tiles Finanzas 
+	Route::get('staffTiles',[
+		'uses' => 'StaffController@staffTiles',
+		'as' => 'finanzas.staffTiles'
+	]);
+
+	Route::resource('/ingreso','IngresoController');
+	Route::resource('/egreso','EgresoController');
 });
 
 

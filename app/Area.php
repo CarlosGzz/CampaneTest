@@ -6,6 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Area extends Model
 {
+	/**
+     * The attributes that are mass assignable.
+     *
+     * @fillable array
+     */
+    protected $fillable = [
+       'id', 'area',
+    ];
     /**
      * Relacion de uno a muchos con Egresos
      */

@@ -2,7 +2,7 @@
 <div class="row">
     <div class="page-title">
         <div class="title_left">
-            <h3> Gaias <small>total de vivientes en gaia</small></h3>
+            <h3> Gaias <small>total de staff en gaia</small></h3>
         </div>
     </div>
 </div>

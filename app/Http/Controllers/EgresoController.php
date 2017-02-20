@@ -4,8 +4,24 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Egreso;
+
+use App\Http\Traits\CampamentoTrait;
+
 class EgresoController extends Controller
 {
+    private $campamentoId;
+    /**
+     * Create a new controller instance and validation of user auth.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->campamentoId = CampamentoTrait::campamentoActual();
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -13,7 +29,13 @@ class EgresoController extends Controller
      */
     public function index()
     {
-        //
+        $egresos = Egreso::all();
+        $egresosArray = array();
+        $egresoArray = array();
+        foreach ($egresos as $egreso) {
+            # code...
+        }
+        return $egresos;
     }
 
     /**

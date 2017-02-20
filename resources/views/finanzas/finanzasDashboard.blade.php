@@ -10,6 +10,8 @@
     <link href="/js/datatables/fixedHeader.bootstrap.min.css" rel="stylesheet">
     <link href="/js/datatables/responsive.bootstrap.min.css" rel="stylesheet">
     <link href="/js/datatables/scroller.bootstrap.min.css" rel="stylesheet">
+    <!-- Select2 -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
 @stop
 
 @section('content')
@@ -18,12 +20,13 @@
 	<div class="row">
 		<div class="page-title">
 			<div class="title_left">
-				<h3> Staff<small>informacion de todo el Staff</small></h3>
+				<h3> Ingresos y Egresos <small></small></h3>
 			</div>
 		</div>
 	</div>
+	@include('finanzas.finanzasTiles')
 	<!--Vivientes Registrados-->
-	<div class="row" id="tablaStaff">
+	<div class="row" id="tablaIngresosEgresos">
 		<div class="col-md-12 col-sm-12 col-xs-12">
 			<div class="x_panel">
 				<div class="x_title">
@@ -39,31 +42,48 @@
 				<div class="x_content">
 					<p class="text-muted font-13 m-b-30">
 					</p>
-					<table id="staff" class="table table-striped table-bordered">
-						<thead>
-							<tr>
-								<th>Nombre</th>
-								<th>Apellido</th>
-								<th>Gaia</th>
-								<th>Rol</th>
-								<th>Pagado</th>
-								<th>Vehiculo</th>
-								<th>Correo</th>
-								<th>Telefono Cel</th>
-								<th>Vivientes</th>
-								<th>A Pagar</th>
-								<th>Id</th>
-							</tr>
-						</thead>
-					</table>
+					<div class="col-md-6 col-sm-12 col-xs-12">
+						<h1>Ingresos</h1>
+						<table id="tablaIngresos" class="table table-striped table-bordered">
+							<thead>
+								<tr>
+									<th>Fecha</th>
+									<th>Viviente/Staff</th>
+									<th>Nombre Persona</th>
+									<th>Modo de Pago</th>
+									<th>Monto</th>
+									<th>Comentarios</th>
+									<th>id</th>
+								</tr>
+							</thead>
+						</table>
+					</div>
+					<div class="col-md-6 col-sm-12 col-xs-12">
+						<h1>Egresos</h1>
+						<table id="tablaEgresos" class="table table-striped table-bordered">
+							<thead>
+								<tr>
+									<th>Fecha</th>
+									<th>Area</th>
+									<th>Nombre Persona</th>
+									<th>Descripción</th>
+									<th>Monto</th>
+									<th>id</th>
+								</tr>
+							</thead>
+						</table>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 	<div class="row">
-		<div id="editarEliminarStaff"></div>
+		<div id="editarEliminarIngreso"></div>
+		@include('finanzas.altaIngreso')
+		@include('finanzas.altaEgreso')
+		<div id="editarEliminarEgreso"></div>
 	</div>
-	@include('gaias.gaiasStaffTiles')
+	<br>
 	<br>
 
 </div>
@@ -71,5 +91,5 @@
 @stop
 
 @section('scripts')
-	@include('staff.campamentoActualJavascript')
+	@include('finanzas.finanzasDashboardJavascript')
 @stop

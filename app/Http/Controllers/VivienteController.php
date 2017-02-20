@@ -386,7 +386,8 @@ class VivienteController extends Controller
      */
     public function encuestasDeVivientes()
     {
-        $vivientes = Viviente::where('campamento_id',$this->campamentoId)->where('pagado','>','0')->get();
+        $vivientes = Viviente::where('campamento_id',$this->campamentoId)->get();
+        
         $encuestasArray = array();
         $encuestaArray = array();
         $cualidades = array();
@@ -587,6 +588,25 @@ class VivienteController extends Controller
             array_push($encuestasArray, $encuestaArray);
         }
         return json_encode($encuestasArray);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function vivientesDropdown()
+    {
+        $vivientes = Viviente::all();
+        //dd($vivientes);
+        $vivientesArray = array();
+        $vivienteArray = array();
+        foreach ($vivientes as $viviente) {
+            $vivienteArray['id'] = $viviente->id;
+            $vivienteArray['nombre'] = $viviente->nombre." ".$viviente->apellidoPaterno." ".$viviente->apellidoMaterno;
+            array_push($vivientesArray, $vivienteArray);
+        }
+        return json_encode($vivientesArray);
     }
 
 

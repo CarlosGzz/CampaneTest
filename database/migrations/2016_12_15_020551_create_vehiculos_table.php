@@ -24,6 +24,8 @@ class CreateVehiculosTable extends Migration
             $table->integer('numeroCajas');
             $table->integer('numeroPersonas');
             $table->timestamps();
+            // Foreign Keyes
+            $table->foreign('staff_id')->references('id')->on('staff')->onUpdate('cascade')->onDelete('cascade');
         });
 
     }

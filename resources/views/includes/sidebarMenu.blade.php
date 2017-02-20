@@ -43,10 +43,10 @@
                         </a>
                         <ul class="nav child_menu" style="display: none">
                             <li>
-                                <a href="{{ url('/stafers/staff') }}">Miembros</a>
+                                <a href="{{ url('/staff/miembros') }}">Miembros</a>
                             </li>
                             <li>
-                                <a href="{{ url('/stafers/campamento-actual') }}">Campamento Actual</a>
+                                <a href="{{ url('/staff/campamento-actual') }}">Campamento Actual</a>
                             </li>
                         </ul>
                     </li>
@@ -93,10 +93,10 @@
                         </a>
                         <ul class="nav child_menu" style="display: none">
                             <li>
-                                <a href="{{ url('/stafers/staff') }}">Miembros</a>
+                                <a href="{{ url('/staff/miembros') }}">Miembros</a>
                             </li>
                             <li>
-                                <a href="{{ url('/stafers/campamento-actual') }}">Campamento Actual</a>
+                                <a href="{{ url('/staff/campamento-actual') }}">Campamento Actual</a>
                             </li>
                             <li>
                                 <a href="{{ url('/staff/asistencias') }}">Asistencias</a>
@@ -118,7 +118,7 @@
                         </a>
                         <ul class="nav child_menu" style="display: none">
                             <li>
-                                <a href="{{ url('/finanzas/ingresos-egresos') }}">Ingresos/Egresos</a>
+                                <a href="{{ url('/finanzas') }}">Ingresos/Egresos</a>
                             </li>
                         </ul>
                     </li>

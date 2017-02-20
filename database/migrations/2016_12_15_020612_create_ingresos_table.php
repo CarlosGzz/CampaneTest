@@ -19,12 +19,17 @@ class CreateIngresosTable extends Migration
             $table->integer('campamento_id')->unsigned();
             // Datos
             $table->date('fecha');
-            $table->integer('idStaffViviente');
+            $table->enum('staffVivienteOtro', ['staff', 'viviente', 'otro']);
+            $table->integer('staff_id')->unsigned()->nullable();
+            $table->integer('viviente_id')->unsigned()->nullable();
+            $table->string('otro',255)->nullable();
             $table->string('metodoDePago',45);
             $table->double('monto');
-            $table->string('comentarios',400);
+            $table->string('comentarios',400)->nullable();
             // Llaves Foraneas Campamento/Viviente
             $table->foreign('campamento_id')->references('id')->on('campamentos')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('staff_id')->references('id')->on('staff')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('viviente_id')->references('id')->on('vivientes')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }
