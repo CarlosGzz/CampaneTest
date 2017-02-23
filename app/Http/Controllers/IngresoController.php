@@ -37,27 +37,27 @@ class IngresoController extends Controller
         $ingresosArray = array();
         $ingresoArray = array();
         foreach ($ingresos as $ingreso) {
-                    if($ingreso->campamento->id== $this->campamentoId){
-                        $ingresoArray['fecha'] = $ingreso->fecha;
-                        $ingresoArray['staffVivienteOtro'] = $ingreso->staffVivienteOtro;
-                        if($ingreso->staffVivienteOtro == 'staff'){
-                            $ingresoArray['nombrePersona'] = $ingreso->staff->nombre." ".$ingreso->staff->apellidoPaterno." ".$ingreso->staff->apellidoMaterno;
-                        }else{
-                            if($ingreso->staffVivienteOtro == 'viviente'){
-                                $ingresoArray['nombrePersona'] = $ingreso->viviente->nombre." ".$ingreso->viviente->apellidoPaterno." ".$ingreso->viviente->apellidoMaterno;
-                            }else{
-                                if($ingreso->staffVivienteOtro == 'otro'){
-                                    $ingresoArray['nombrePersona'] = $ingreso->otro;
-                                }
-                            }
+            if($ingreso->campamento->id== $this->campamentoId){
+                $ingresoArray['fecha'] = $ingreso->fecha;
+                $ingresoArray['staffVivienteOtro'] = $ingreso->staffVivienteOtro;
+                if($ingreso->staffVivienteOtro == 'staff'){
+                    $ingresoArray['nombrePersona'] = $ingreso->staff->nombre." ".$ingreso->staff->apellidoPaterno." ".$ingreso->staff->apellidoMaterno;
+                }else{
+                    if($ingreso->staffVivienteOtro == 'viviente'){
+                        $ingresoArray['nombrePersona'] = $ingreso->viviente->nombre." ".$ingreso->viviente->apellidoPaterno." ".$ingreso->viviente->apellidoMaterno;
+                    }else{
+                        if($ingreso->staffVivienteOtro == 'otro'){
+                            $ingresoArray['nombrePersona'] = $ingreso->otro;
                         }
-                        $ingresoArray['metodoDePago'] = $ingreso->metodoDePago;
+                    }
+                }
+                $ingresoArray['metodoDePago'] = $ingreso->metodoDePago;
 
-                        $ingresoArray['monto'] = $ingreso->monto;
-                        $ingresoArray['comentarios'] = $ingreso->comentarios;
-                        $ingresoArray['id'] = $ingreso->id;
-                        array_push($ingresosArray, $ingresoArray);
-                                    
+                $ingresoArray['monto'] = $ingreso->monto;
+                $ingresoArray['comentarios'] = $ingreso->comentarios;
+                $ingresoArray['id'] = $ingreso->id;
+                array_push($ingresosArray, $ingresoArray);
+
             }
         }
         return $ingresosArray;
@@ -82,16 +82,27 @@ class IngresoController extends Controller
     public function store(Request $request)
     {
         $ingreso = new Ingreso();
-        //dd($request);
         $ingreso->campamento_id = $this->campamentoId;
         $ingreso->fecha = $request->fecha;
         $ingreso->staffVivienteOtro = $request->staffVivienteOtro;
 
         if($request->staffVivienteOtro == "staff"){
             $ingreso->staff_id = $request->staff;
+            $staff = Staff::find($ingreso->staff_id);
+            $totalStaff = 0;
+            foreach ($staff->campamento as $campa) {
+                if($campa->id == $this->campamentoId){
+                    $totalStaff = $campa->pivot->pagado;
+                }
+            }
+            $totalStaff += $request->monto;
+            $staff->campamento()->updateExistingPivot($this->campamentoId, ['pagado'=>$totalStaff]);
         }else{
             if($request->staffVivienteOtro == "viviente"){
                 $ingreso->viviente_id = $request->viviente;
+                $viviente = Viviente::find($ingreso->viviente_id);
+                $viviente->pagado += $request->monto;
+                $viviente->save();
             }else{
                 if($request->staffVivienteOtro == "otro"){
                     $ingreso->otro = $request->otro;
@@ -102,7 +113,7 @@ class IngresoController extends Controller
         $ingreso->monto = $request->monto;
 
         $ingreso->save();
-        flash($ingreso->nombre.' creado exitosamente','success');
+        flash('Ingreso registrado exitosamente','success');
         return redirect('/finanzas');
     }
 
@@ -125,7 +136,8 @@ class IngresoController extends Controller
      */
     public function edit($id)
     {
-        //
+        $ingreso = Ingreso::find($id);
+        return view('finanzas/editIngreso')->with('ingreso', $ingreso);
     }
 
     /**
@@ -148,6 +160,50 @@ class IngresoController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $ingreso = Ingreso::find($id);
+        if($ingreso->staffVivienteOtro == "staff"){
+            $staff = Staff::find($ingreso->staff_id);
+            $totalStaff = 0;
+            foreach ($staff->campamento as $campa) {
+                if($campa->id == $this->campamentoId){
+                    $totalStaff = $campa->pivot->pagado;
+                }
+            }
+            $totalStaff -= $ingreso->monto;
+            $staff->campamento()->updateExistingPivot($this->campamentoId, ['pagado'=>$totalStaff]);
+        }else{
+            if($ingreso->staffVivienteOtro == "viviente"){
+                $viviente = Viviente::find($ingreso->viviente_id);
+                $viviente->pagado -= $ingreso->monto;
+                $viviente->save();
+            }
+        }
+        $ingreso->delete();
+
+        if($ingreso->delete()){
+            flash('Ingreso eliminado exitosamente','success');
+            return redirect('/finanzas');
+        }else{
+            flash('Ingreso error al eliminar','success');
+            return redirect('/finanzas');
+        }
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function totalIngresos()
+    {
+        $ingresos = Ingreso::all();
+        $suma = 0;
+        foreach ($ingresos as $ingreso) {
+            if($ingreso->campamento->id== $this->campamentoId){
+                $suma += $ingreso->monto;
+            }
+        }
+        return $suma;
     }
 }

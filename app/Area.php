@@ -12,7 +12,7 @@ class Area extends Model
      * @fillable array
      */
     protected $fillable = [
-       'id', 'area',
+       'id', 'area', 'activa', 
     ];
     /**
      * Relacion de uno a muchos con Egresos

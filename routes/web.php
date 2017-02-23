@@ -76,6 +76,20 @@ Route::get('puesto/destroy/{id}',[
 		'uses' => 'PuestoController@destroy',
 		'as' => 'puesto.destroy'
 		]);
+
+/*
+* Routes para AreaController...
+*/
+Route::resource('/area','AreaController');
+Route::get('area/edit/{id}',[
+		'uses' => 'AreaController@edit',
+		'as' => 'area.edit'
+		]);
+Route::get('area/destroy/{id}',[
+		'uses' => 'AreaController@destroy',
+		'as' => 'area.destroy'
+		]);
+
 /*
 * Routes para Vivientes...
 */
@@ -84,7 +98,11 @@ Route::get('viviente/edit/{id}',[
 		'uses' => 'VivienteController@edit',
 		'as' => 'vivientes.edit'
 		]);
-	Route::get('viviente/destroy/{id}',[
+Route::get('viviente/edit2/{id}',[
+		'uses' => 'VivienteController@edit2',
+		'as' => 'vivientes.edit2'
+		]);
+Route::get('viviente/destroy/{id}',[
 		'uses' => 'VivienteController@destroy',
 		'as' => 'vivientes.destroy'
 		]);
@@ -200,7 +218,7 @@ Route::group(['prefix'=>'staff'],function(){
 
 	// Routes for Staff Charts 
 	Route::get('dropdown',[
-		'uses' => 'StaffController@dropdown',
+		'uses' => 'StaffController@staffDropdownCampamentoActual',
 		'as' => 'staff.dropdown'
 	]);
 
@@ -230,20 +248,24 @@ Route::group(['prefix'=>'finanzas'],function(){
 	Route::get('',function(){
      	return View::make('finanzas/finanzasDashboard');
     })->middleware('auth');
-    //Alta Finanzas 
-	Route::get('staffTiles',[
-		'uses' => 'EgresoController@store',
-		'as' => 'finanzas.altaEgreso'
-	]);
 
     //Tiles Finanzas 
-	Route::get('staffTiles',[
-		'uses' => 'StaffController@staffTiles',
-		'as' => 'finanzas.staffTiles'
+	Route::get('TotalIngresos',[
+		'uses' => 'IngresoController@totalIngresos',
+		'as' => 'finanzas.totalIngresos',
 	]);
 
 	Route::resource('/ingreso','IngresoController');
 	Route::resource('/egreso','EgresoController');
+
+	Route::get('ingreso/edit/{id}',[
+		'uses' => 'IngresoController@edit',
+		'as' => 'ingreso.edit'
+		]);
+	Route::get('ingreso/destroy/{id}',[
+		'uses' => 'IngresoController@destroy',
+		'as' => 'ingreso.destroy'
+		]);
 });
 
 

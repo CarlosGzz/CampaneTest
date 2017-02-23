@@ -36,6 +36,7 @@
 			        dataSrc: ''
 			    },
 			  	columns: [
+			  		{ data: 'id' },
 			  		{ data: 'genero' },
 			  		{ data: 'nombre' },
 			  		{ data: 'apellido' },
@@ -46,8 +47,7 @@
 			  		{ data: 'observaciones' },
 			  		{ data: 'medio' },
 			  		{ data: 'staff' },
-
-			  		{ data: 'id' },],
+			  		],
               buttons: [
                 {
                   extend: "copy",
@@ -102,6 +102,7 @@
 			        dataSrc: ''
 			    },
 			  columns: [
+			  			{ data: 'id' },
 			  			{ data: 'genero' },
 			  			{ data: 'nombre' },
 				        { data: 'apellido' },
@@ -116,7 +117,7 @@
 				        { data: 'alergias' },
 				        { data: 'medio' },
 				        { data: 'staff' },
-				        { data: 'id' },],
+				        ],
               buttons: [
                 {
                   extend: "copy",
@@ -171,6 +172,7 @@
 			        dataSrc: ''
 			    },
 			  columns: [
+			  			{ data: 'id' },
 			  			{ data: 'genero' },
 			  			{ data: 'nombre' },
 				        { data: 'apellido' },
@@ -185,7 +187,7 @@
 				        { data: 'alergias' },
 				        { data: 'medio' },
 				        { data: 'staff' },
-				        { data: 'id' },],
+				        ],
               buttons: [
                 {
                   extend: "copy",
@@ -255,7 +257,7 @@
 	<script type="text/javascript">
 		function showEditVivienteParcial(obj){
 			$.ajax({
-		       url: "{{ url('/viviente/edit') }}"+"/"+obj,
+		       url: "{{ url('/viviente/edit2') }}"+"/"+obj,
 		       success: function(html) {
 		       		$("#editarEliminarVivienteParcial").empty();
 		          	$("#editarEliminarVivienteParcial").append(html);
@@ -277,7 +279,7 @@
 	<script type="text/javascript">
 		function showEditVivientePagado(obj){
 			$.ajax({
-		       url: "{{ url('/viviente/edit') }}"+"/"+obj,
+		       url: "{{ url('/viviente/edit2') }}"+"/"+obj,
 		       success: function(html) {
 		       		$("#editarEliminarVivientePagado").empty();
 		          	$("#editarEliminarVivientePagado").append(html);

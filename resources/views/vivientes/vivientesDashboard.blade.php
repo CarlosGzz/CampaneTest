@@ -42,6 +42,7 @@
 					<table id="vivientes" class="table table-striped table-bordered">
 						<thead>
 							<tr>
+								<th>Id</th>
 								<th>Genero</th>
 								<th>Nombre</th>
 								<th>Apellido</th>
@@ -52,7 +53,6 @@
 								<th>Observaciones</th>
 								<th>Medio</th>
 								<th>Staff</th>
-								<th>Id</th>
 							</tr>
 						</thead>
 					</table>
@@ -89,6 +89,7 @@
 					<table id="vivientesParciales" class="table table-striped table-bordered">
 						<thead>
 							<tr>
+								<th>Id</th>
 								<th>Genero</th>
 								<th>Nombre</th>
 								<th>Apellido</th>
@@ -103,7 +104,6 @@
 								<th>Alergias</th>
 								<th>Medio</th>
 								<th>Staff</th>
-								<th>Id</th>
 							</tr>
 						</thead>
 					</table>
@@ -135,6 +135,7 @@
 					<table id="vivientesPagadosTabla" class="table table-striped table-bordered">
 						<thead>
 							<tr>
+								<th>Id</th>
 								<th>Genero</th>
 								<th>Nombre</th>
 								<th>Apellido</th>
@@ -149,7 +150,6 @@
 								<th>Alergias</th>
 								<th>Medio</th>
 								<th>Staff</th>
-								<th>Id</th>
 							</tr>
 						</thead>
 					</table>

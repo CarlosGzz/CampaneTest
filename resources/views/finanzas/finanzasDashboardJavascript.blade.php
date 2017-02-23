@@ -32,7 +32,7 @@
 	<!-- Staff Dropdown -->
 	<script type="text/javascript">
     	function staffDropdown() {
-        	$.get("{{ route('staffDropdown')}}", 
+        	$.get("{{ route('staff.dropdown')}}", 
             function(data) {
                 var model = $('#staff');
                 model.empty();
@@ -272,26 +272,25 @@
 		    }
 		}
 
-		function cerrarViviente() {
-			$("#editarEliminarViviente").empty();
-			$("#editarEliminarVivienteParcial").empty();
-			$("#editarEliminarVivientePagado").empty();
+		function cerrarIngreso() {
+			$("#editarEliminarIngreso").empty();
+		}
+		function cerrarIngreso() {
+			$("#editarEliminarIngreso").empty();
 		}
 	</script>
 
 	<!-- Ajax para Vivientes Tiles -->
 	<script type="text/javascript">
-		var pagados=0;
-		function vivientesPagadosAjax(){
+		var diferencia=0;
+		function totalIngresos(){
 			$.ajax({
-				url: "{{ route('staffDashboard.vivientesPagadosContador')}}",
+				url: "{{ route('finanzas.totalIngresos')}}",
 				dataType: 'json',
 				success: function(data) {
-					$("#vivientesPagados").empty();
-					$("#vivientesPagados").html(data); 
-					pagados = data;
-					$("#vacantes").empty();
-					$("#vacantes").html(45-pagados);
+					$("#ingresos").empty();
+					$("#ingresos").html(data); 
+					diferencia = data;
 				}
 			});
 		}
@@ -324,16 +323,14 @@
 	<!-- Cargar Pagina-->
 	<script type="text/javascript">
 		function cargarPagina (argument) {
-			vivientesRegistradosAjax();
-			vivientesPagadosAjax();
-			vivientesPagadosParcialesAjax();
-			staffDropdown()
-			vivientesDropdown()
+			totalIngresos();
 		}
 	</script>
 	<!-- Run Ajax on DOM -->
 	<script type="text/javascript">
 		$(document).ready(function(){
+			staffDropdown();
+			vivientesDropdown();
 			cargarPagina();
 			setInterval(function(){
 				cargarPagina();

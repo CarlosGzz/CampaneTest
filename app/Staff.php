@@ -63,7 +63,7 @@ class Staff extends Model
      */
     public function campamento()
     {
-        return $this->belongsToMany('App\Campamento');
+        return $this->belongsToMany('App\Campamento')->withPivot('pagado', 'puesto_id', 'vehiculo_id');
     }
 
     /**

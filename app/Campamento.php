@@ -54,7 +54,7 @@ class Campamento extends Model
      */
     public function staffAsistente()
     {
-        return $this->belongsToMany('App\Staff');
+        return $this->belongsToMany('App\Staff')->withPivot('pagado', 'puesto_id', 'vehiculo_id');
     }
 
     /**

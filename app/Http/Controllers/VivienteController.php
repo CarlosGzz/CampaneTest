@@ -59,6 +59,18 @@ class VivienteController extends Controller
     }
 
     /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit2($id)
+    {
+        $viviente = Viviente::find($id);
+        return view('vivientes/editVivientePagado')->with('viviente', $viviente);
+    }
+
+    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -76,6 +88,9 @@ class VivienteController extends Controller
 
         if(isset($request->apellidoMaterno))
             $viviente->apellidoMaterno = $request->apellidoMaterno;
+
+        if(isset($request->genero))
+            $viviente->genero = $request->genero;
 
         if(isset($request->fechaNacimiento))
             $viviente->fechaNacimiento = $request->fechaNacimiento;
@@ -105,6 +120,9 @@ class VivienteController extends Controller
         }
         if(isset($request->observaciones))
             $viviente->observaciones = $request->observaciones;
+
+        if(isset($request->gaia_id))
+            $viviente->gaia_id = $request->gaia_id;
 
         $saved = $viviente->save();
         if($viviente->save()){

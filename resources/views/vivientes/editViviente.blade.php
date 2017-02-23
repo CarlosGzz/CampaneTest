@@ -44,6 +44,17 @@
 				{!! Form::label('apellidoMaterno','Apellido Materno') !!}*
 				{!! Form::text('apellidoMaterno',$viviente->apellidoMaterno,['class'=>'form-control', 'placeholder' => 'Gonzalez', 'required']) !!}
 			</div>
+			<!--Genero-->
+			<div class="form-group">
+				{!! Form::label('genero','Genero') !!}*
+				@if ($viviente->genero == 'M')
+					M: {!! Form::radio('genero', 'M', true) !!}
+					F: {!! Form::radio('genero', 'F', false) !!}
+				@else
+					M: {!! Form::radio('genero', 'M', false) !!}
+					F: {!! Form::radio('genero', 'F', true) !!}
+				@endif
+			</div>
 			<!--Fecha Nacimiento-->
 			<div class="form-group">
 				{!! Form::label('fechaNacimiento','Fecha de Nacimiento') !!}*

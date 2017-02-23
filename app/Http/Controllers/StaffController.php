@@ -116,7 +116,6 @@ class StaffController extends Controller
         }
         $staff->save();
         foreach ($staff->campamento as $campa) {
-            echo $campa->nombre;
             if($campa->id == $this->campamentoId){
                 return redirect('/staff/miembros');
             }
@@ -235,6 +234,7 @@ class StaffController extends Controller
             if($staf->campamento){
                 foreach ($staf->campamento as $campa) {
                     if($campa->id == $this->campamentoId){
+                        //dd($campa);
                         $staffArray['nombre'] = $staf->nombre;
                         $staffArray['apellido'] = $staf->apellidoPaterno." ".$staf->apellidoMaterno;
                         $staffArray['gaia'] = $staf->gaia->gaia;
@@ -243,7 +243,7 @@ class StaffController extends Controller
                         }else{
                             $staffArray['puesto'] = 'No Asignado';
                         }
-                        $staffArray['pagado'] = $campa->pagado;
+                        $staffArray['pagado'] = $campa->pivot->pagado;
                         if(!empty($campa->vehiculo)){
                             $staffArray['vehiculo'] = $campa->vehiculo;
                         }else{
@@ -367,5 +367,31 @@ class StaffController extends Controller
             }
         }
         return json_encode($satffTiles); 
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function staffDropdownCampamentoActual()
+    {
+        $staff = Staff::all();
+        //dd($vivientes);
+        $staffsArray = array();
+        $staffArray = array();
+        foreach ($staff as $staf) {
+            if($staf->campamento){
+                foreach ($staf->campamento as $campa) {
+                    if($campa->id == $this->campamentoId){
+                        $staffArray['id'] = $staf->id;
+                        $staffArray['nombre'] = $staf->nombre." ".$staf->apellidoPaterno." ".$staf->apellidoMaterno;
+                        array_push($staffsArray, $staffArray);
+                    }
+                }
+            }
+        }
+        
+        return json_encode($staffsArray);
     }
 }
