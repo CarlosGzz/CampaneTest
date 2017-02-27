@@ -182,6 +182,49 @@
 	</div>
 	<br>
 	@include('vivientes.vivientesChartsStaffDashboard')
+
+	<!--Vivientes-->
+	<div class="row" id="tablaVivientesTotales">
+		<div class="col-md-12 col-sm-12 col-xs-12">
+			<div class="x_panel">
+				<div class="x_title">
+					<h2>Tabla de Vivientes <small></small></h2>
+					<ul class="nav navbar-right panel_toolbox">
+						<li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+						</li>
+						<li><a class="close-link"><i class="fa fa-close"></i></a>
+						</li>
+					</ul>
+					<div class="clearfix"></div>
+				</div>
+				<div class="x_content">
+					<p class="text-muted font-13 m-b-30">
+					</p>
+					<table id="vivientesTotales" class="table table-striped table-bordered">
+						<thead>
+							<tr>
+								<th>Id</th>
+								<th>Genero</th>
+								<th>Nombre</th>
+								<th>Apellido</th>
+								<th>Edad</th>
+								<th>Telefono</th>
+								<th>Celular</th>
+								<th>Correo</th>
+								<th>Gaia</th>
+								<th>Pagado</th>
+								<th>Observaciones</th>
+								<th>Restricciones Alimentarias</th>
+								<th>Alergias</th>
+								<th>Medio</th>
+								<th>Staff</th>
+							</tr>
+						</thead>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
 	
 
 </div>

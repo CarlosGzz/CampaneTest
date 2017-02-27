@@ -18,7 +18,7 @@
 				</div>
 			</div>
 			@endif
-			{!! Form::open(['route' => 'campamento.store', 'method' => 'POST']) !!}
+			{!! Form::open(['route' => 'egreso.store', 'method' => 'POST']) !!}
 			<!--Fecha-->
 			<div class="form-group">
 				{!! Form::label('fecha','Fecha') !!}*
@@ -27,22 +27,22 @@
 			<!--Area-->
 			<div class="form-group">
 				{!! Form::label('area','Area') !!}*
-				{!! Form::select('area', array(),'viviente',['class'=>'form-control select', 'required'])!!}
+				{!! Form::select('area', array(),'viviente',['class'=>'form-control select', 'required', 'id' => 'area'])!!}
 			</div>
 			<!--Staff-->
 			<div class="form-group">
 				{!! Form::label('staff','Staff') !!}
-				{!! Form::select('staff', array(),'viviente',['class'=>'form-control select', 'required'])!!}
+				{!! Form::select('staff', array(),'viviente',['class'=>'form-control select', 'id' => 'staff2', 'required'])!!}
 			</div>
 			<!--Descripcion-->
 			<div class="form-group">
 				{!! Form::label('descripcion','Descripción') !!}
-				{!! Form::text('descripcion','',['class'=>'form-control', 'placeholder' => 'otro','maxlength' => '120', 'required']) !!}
+				{!! Form::text('descripcion','',['class'=>'form-control', 'placeholder' => 'Descripción de egreso','maxlength' => '120', 'required']) !!}
 			</div>
 			<!--Monto-->
 			<div class="form-group">
 				{!! Form::label('monto','Monto') !!}
-				{!! Form::number('monto','',['class'=>'form-control', 'placeholder' => '000','maxlength' => '120', 'required']) !!}
+				{!! Form::number('monto','',['class'=>'form-control', 'placeholder' => '0','maxlength' => '120', 'required']) !!}
 			</div>
 			<hr>
 			<!--Boton-->

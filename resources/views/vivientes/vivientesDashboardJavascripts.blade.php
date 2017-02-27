@@ -229,6 +229,66 @@
 		    } );
 		} );
     </script>
+    <!-- Viviente Pagado -->
+    <script>
+      $(document).ready(function() {
+        var handleDataTableButtons = function() {
+          if ($("#vivientesTotales").length) {
+            $("#vivientesTotales").DataTable({
+              dom: "Bfrtip",
+              keys: true,
+              ajax: {
+			        url: "{{ url('/vivientes/vivientes') }}",
+			        dataSrc: ''
+			    },
+			  columns: [
+			  			{ data: 'id' },
+			  			{ data: 'genero' },
+			  			{ data: 'nombre' },
+				        { data: 'apellido' },
+				        { data: 'edad' },
+				        { data: 'telefono' },
+				        { data: 'celular' },
+				        { data: 'correo' },
+				        { data: 'gaia' },
+				        { data: 'pagado' },
+				        { data: 'observaciones' },
+				        { data: 'restricciones' },
+				        { data: 'alergias' },
+				        { data: 'medio' },
+				        { data: 'staff' },
+				        ],
+              buttons: [
+                {
+                  extend: "copy",
+                  className: "btn-sm"
+                },
+                {
+                  extend: "excel",
+                  className: "btn-sm"
+                },
+                {
+                  extend: "print",
+                  className: "btn-sm"
+                },
+              ],
+              responsive: true,
+            });
+          }
+        };
+
+        TableManageButtons = function() {
+          "use strict";
+          return {
+            init: function() {
+              handleDataTableButtons();
+            }
+          };
+        }();
+
+        TableManageButtons.init();
+      });
+    </script>
     <!-- /DATATABLES -->
 
     <!-- Ajax para desplegar el editor de campamento -->

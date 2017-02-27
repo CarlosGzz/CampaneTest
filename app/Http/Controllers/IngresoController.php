@@ -12,6 +12,8 @@ use App\Viviente;
 
 use App\Http\Traits\CampamentoTrait;
 
+use Carbon\Carbon;
+
 class IngresoController extends Controller
 {
     private $campamentoId;
@@ -38,7 +40,8 @@ class IngresoController extends Controller
         $ingresoArray = array();
         foreach ($ingresos as $ingreso) {
             if($ingreso->campamento->id== $this->campamentoId){
-                $ingresoArray['fecha'] = $ingreso->fecha;
+                $fecha = Carbon::parse($ingreso->fecha);
+                $ingresoArray['fecha'] = $fecha->format('d-m-Y');
                 $ingresoArray['staffVivienteOtro'] = $ingreso->staffVivienteOtro;
                 if($ingreso->staffVivienteOtro == 'staff'){
                     $ingresoArray['nombrePersona'] = $ingreso->staff->nombre." ".$ingreso->staff->apellidoPaterno." ".$ingreso->staff->apellidoMaterno;
@@ -149,7 +152,48 @@ class IngresoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $ingreso = Ingreso::find($id);
+        if(isset($request->fecha))
+            $ingreso->fecha = $request->fecha;
+
+        if(isset($request->metodoDePago))
+            $ingreso->metodoDePago = $request->metodoDePago;
+
+        if(isset($request->monto)){
+
+            if($ingreso->staffVivienteOtro == "staff"){
+                $staff = Staff::find($ingreso->staff_id);
+                $totalStaff = 0;
+                foreach ($staff->campamento as $campa) {
+                    if($campa->id == $this->campamentoId){
+                        $totalStaff = $campa->pivot->pagado;
+                    }
+                }
+                $totalStaff += $request->monto;
+                if($ingreso->monto > $request->monto){
+                    $totalStaff -= $request->monto;
+                }else{
+                    $totalStaff += $request->monto;
+                }
+                $staff->campamento()->updateExistingPivot($this->campamentoId, ['pagado'=>$totalStaff]);
+            }else{
+                if($ingreso->staffVivienteOtro == "viviente"){
+                    $viviente = Viviente::find($ingreso->viviente_id);
+                    if($ingreso->monto > $request->monto){
+                        $viviente->pagado -= $viviente->pagado-$request->monto;
+                    }else{
+                        $viviente->pagado += $request->monto-$viviente->pagado;
+                    }
+                    $viviente->save();
+                }
+            }
+
+            $ingreso->monto = $request->monto;
+        }
+
+        $ingreso->save();
+        flash('Ingreso modificado exitosamente','success');
+        return redirect('/finanzas');
     }
 
     /**

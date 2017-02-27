@@ -89,6 +89,10 @@ Route::get('area/destroy/{id}',[
 		'uses' => 'AreaController@destroy',
 		'as' => 'area.destroy'
 		]);
+Route::get('areaDropdown',[
+	'uses' => 'AreaController@index',
+	'as' => 'areaDropdown',
+]);
 
 /*
 * Routes para Vivientes...
@@ -132,6 +136,10 @@ Route::group(['prefix'=>'vivientes'],function(){
 	Route::get('vivientesPagados',[
 		'uses' => 'VivienteController@vivientesEnCampamentoPagadosTotales',
 		'as' => 'vivientes.registradosPagados'
+	]);
+	Route::get('vivientes',[
+		'uses' => 'VivienteController@vivientesTotales',
+		'as' => 'vivientes'
 	]);
 
 	//Tiles Gaias de Vivientes
@@ -255,6 +263,11 @@ Route::group(['prefix'=>'finanzas'],function(){
 		'as' => 'finanzas.totalIngresos',
 	]);
 
+	Route::get('TotalEgresos',[
+		'uses' => 'EgresoController@totalEgresos',
+		'as' => 'finanzas.totalEgresos',
+	]);
+
 	Route::resource('/ingreso','IngresoController');
 	Route::resource('/egreso','EgresoController');
 
@@ -265,6 +278,15 @@ Route::group(['prefix'=>'finanzas'],function(){
 	Route::get('ingreso/destroy/{id}',[
 		'uses' => 'IngresoController@destroy',
 		'as' => 'ingreso.destroy'
+		]);
+
+	Route::get('egreso/edit/{id}',[
+		'uses' => 'EgresoController@edit',
+		'as' => 'egreso.edit'
+		]);
+	Route::get('egreso/destroy/{id}',[
+		'uses' => 'EgresoController@destroy',
+		'as' => 'egreso.destroy'
 		]);
 });
 

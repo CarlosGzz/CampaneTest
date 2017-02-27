@@ -252,7 +252,27 @@ class StaffController extends Controller
                         $staffArray['correo'] = $staf->correo;
                         $staffArray['telefonoCel'] = $staf->telefonoCel;
                         $staffArray['vivientes'] = $staf->vivientes->count();
-                        $staffArray['aPagar'] = '350';
+                        $vivientesPagados = 0;
+                        foreach ($staf->vivientes as $viviente) {      
+                            if($viviente->pagado > 0){
+                                $vivientesPagados++;
+                            }
+                        }
+                        if($vivientesPagados==0){
+                            $staffArray['aPagar'] = '350';
+                        }else{
+                            if($vivientesPagados == 1){
+                                $staffArray['aPagar'] = '150';
+                            }else{
+                                if($vivientesPagados==2){
+                                    $staffArray['aPagar'] = '50';
+                                }else{
+                                    if($vivientesPagados>2){
+                                        $staffArray['aPagar'] = '0';
+                                    }
+                                }
+                            }
+                        }
                         $staffArray['id'] = $staf->id;
                         array_push($staffsArray, $staffArray);
                     }

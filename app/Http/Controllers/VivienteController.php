@@ -234,6 +234,7 @@ class VivienteController extends Controller
         }
         return json_encode($vivientesArray); 
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -264,15 +265,68 @@ class VivienteController extends Controller
             $vivienteArray['restricciones'] = $viviente->restriccionesAlimentarias;
             $vivienteArray['alergias'] = $viviente->alergias;
             $vivienteArray['medio'] = $viviente->medioCampamento;
-            if(!empty($viviente->otro)){
-                $vivienteArray['staff'] = $viviente->otro;
+            if($vivienteArray['medio'] == 'Miembro de Staff'){
+                if(!empty($viviente->otro)){
+                    $vivienteArray['staff'] = $viviente->otro;
+                }else{
+                    $vivienteArray['staff'] = $viviente->staff->nombre." ".$viviente->staff->apellidoPaterno;
+                }
             }else{
-                $vivienteArray['staff'] = $viviente->staff->nombre." ".$viviente->staff->apellidoPaterno;
+                $vivienteArray['staff'] = '';
             }
             array_push($vivientesArray, $vivienteArray);
         }
         return json_encode($vivientesArray); 
     }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function vivientesTotales()
+    {
+        $vivientes = Viviente::where('campamento_id',$this->campamentoId)->get();
+        $vivientesArray = array();
+        $vivienteArray = array();
+        foreach ($vivientes as $viviente) {
+            $vivienteArray['id'] = $viviente->id;
+            $vivienteArray['genero'] = $viviente->genero;
+            $vivienteArray['nombre'] = $viviente->nombre;
+            $vivienteArray['apellido'] = $viviente->apellidoPaterno." ".$viviente->apellidoMaterno;
+            $edad = Carbon::parse($viviente->fechaNacimiento);
+            $vivienteArray['edad'] = $edad->age;
+            $vivienteArray['telefono'] = $viviente->telefonoCasa;
+            $vivienteArray['celular'] = $viviente->telefonoCel;
+            $vivienteArray['correo'] = $viviente->correo;
+            if($viviente->gaia){
+                $vivienteArray['gaia'] = $viviente->gaia->gaia;
+            }else{
+                $vivienteArray['gaia'] = 'no asignado';
+            }
+            $vivienteArray['pagado'] = $viviente->pagado;
+            $vivienteArray['observaciones'] = $viviente->observaciones;
+            $vivienteArray['restricciones'] = $viviente->restriccionesAlimentarias;
+            $vivienteArray['alergias'] = $viviente->alergias;
+            $vivienteArray['medio'] = $viviente->medioCampamento;
+            if($vivienteArray['medio'] == 'Miembro de Staff'){
+                if(!empty($viviente->otro)){
+                    $vivienteArray['staff'] = $viviente->otro;
+                }else{
+                    $vivienteArray['staff'] = $viviente->staff->nombre." ".$viviente->staff->apellidoPaterno;
+                }
+            }else{
+                $vivienteArray['staff'] = '';
+            }
+            array_push($vivientesArray, $vivienteArray);
+        }
+        return json_encode($vivientesArray); 
+    }
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function distribucionDeGaiasDeVivientes()
     {
         $vivientes = Viviente::where('campamento_id',$this->campamentoId)->where('pagado','>','0')->get();

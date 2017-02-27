@@ -33,9 +33,17 @@ class EgresoController extends Controller
         $egresosArray = array();
         $egresoArray = array();
         foreach ($egresos as $egreso) {
-            # code...
+            if($egreso->campamento->id == $this->campamentoId){
+                $egresoArray['fecha'] = $egreso->fecha;
+                $egresoArray['area'] = $egreso->area->area;
+                $egresoArray['nombrePersona'] = $egreso->staff->nombre." ".$egreso->staff->apellidoPaterno;
+                $egresoArray['descripcion'] = $egreso->descripcion;
+                $egresoArray['monto'] = $egreso->monto;
+                $egresoArray['id'] = $egreso->id;
+                array_push($egresosArray, $egresoArray);
+            }
         }
-        return $egresos;
+        return $egresosArray;
     }
 
     /**
@@ -56,7 +64,17 @@ class EgresoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $egreso = new Egreso();
+        $egreso->campamento_id = $this->campamentoId;
+        $egreso->fecha = $request->fecha;
+        $egreso->area_id = $request->area;
+        $egreso->staff_id = $request->staff;
+        $egreso->descripcion = $request->descripcion;
+        $egreso->monto = $request->monto;
+
+        $egreso->save();
+        flash('Egreso registrado exitosamente','success');
+        return redirect('/finanzas');
     }
 
     /**
@@ -78,7 +96,8 @@ class EgresoController extends Controller
      */
     public function edit($id)
     {
-        //
+        $egreso = Egreso::find($id);
+        return view('finanzas/editEgreso')->with('egreso', $egreso);
     }
 
     /**
@@ -90,7 +109,25 @@ class EgresoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $egreso = Egreso::find($id);
+        if(isset($request->fecha))
+            $egreso->fecha = $request->fecha;
+
+        if(isset($request->area))
+            $egreso->area_id = $request->area;
+
+        if(isset($request->staff))
+            $egreso->staff_id = $request->staff;
+
+        if(isset($request->descripcion))
+            $egreso->descripcion = $request->descripcion;
+
+        if(isset($request->monto))
+            $egreso->monto = $request->monto;
+
+        $egreso->save();
+        flash('Egreso modificado exitosamente','success');
+        return redirect('/finanzas');
     }
 
     /**
@@ -101,6 +138,31 @@ class EgresoController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $egreso = Egreso::find($id);
+
+        if($egreso->delete()){
+            flash('Egreso eliminado exitosamente','success');
+            return redirect('/finanzas');
+        }else{
+            flash('Egreso error al eliminar','danger');
+            return redirect('/finanzas');
+        }
+    }
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function totalEgresos()
+    {
+        $egresos = Egreso::all();
+        $suma = 0;
+        foreach ($egresos as $egreso) {
+            if($egreso->campamento->id== $this->campamentoId){
+                $suma += $egreso->monto;
+            }
+        }
+        return $suma;
     }
 }
