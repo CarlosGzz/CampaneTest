@@ -5,6 +5,7 @@
 @section('title')
     Dashboard de Campamento Nueva Especie Solo Staff
 @endsection
+
 @section('content')
     <div class="container body">
         <div class="main_container">
@@ -55,7 +56,7 @@
                                                 <h1 style="text-align: center;">
                                                     Fase 1
                                                     <br>
-                                                    15 
+                                                    <div id='fase1'>15</div> 
                                                     <h3 style="text-align: center;">Vivientes</h3>
                                                 </h1>
                                             </div>

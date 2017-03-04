@@ -412,10 +412,9 @@
 				dataType: 'json',
 				success: function(data) {
 					$("#vivientesPagados").empty();
-					$("#vivientesPagados").html(data); 
+					$("#vivientesPagados").html(data);
 					pagados = data;
-					$("#vacantes").empty();
-					$("#vacantes").html(45-pagados);
+					vivientesPagadosParcialesAjax();
 				}
 			});
 		}
@@ -425,7 +424,9 @@
 				dataType: 'json',
 				success: function(data) {
 					$("#vivientesPagadosParciales").empty();
-					$("#vivientesPagadosParciales").html(data); 
+					$("#vivientesPagadosParciales").html(data);
+					pagados += data;
+					vacantesAjax();
 				}
 			});
 		}
@@ -685,7 +686,6 @@
 			vegetarianosVeganos();
 			vivientesRegistradosAjax();
 			vivientesPagadosAjax();
-			vivientesPagadosParcialesAjax();
 			gaias();
 		}
 	</script>

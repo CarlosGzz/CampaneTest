@@ -187,6 +187,22 @@
 		});
 	}
 </script>
+
+<!--Javascript vivientes necesarios en fases de pago -->
+<script type="text/javascript">
+	function vivientesFase1(){
+		$.ajax({
+			url: "{{ route('staffDashboard.vivientesPagadosContador')}}",
+			dataType: 'json',
+			success: function(data) {
+				console.log(data);
+				$("#fase1").empty();
+				$("#fase1").html(15-data); 
+			}
+		});
+	}
+</script>
+
 <!-- Run Ajax on DOM -->
 <script type="text/javascript">
 	$(document).ready(function(){
@@ -207,5 +223,7 @@
 		staffRegistradosAjax();
 		staffAsistentesAjax();
 		staffPagadosAjax();
+
+		vivientesFase1();
 	}
 </script>
